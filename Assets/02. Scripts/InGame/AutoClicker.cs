@@ -2,16 +2,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class AutoClicker : MonoBehaviour
-{
-    [SerializeField] private int _damage;           // 대미지
-    [SerializeField] private float _interval;       // 시간 간격
+{      
+    [SerializeField] private float _interval;   
     private float _timer;
 
     private void Update()
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= _interval)  // 1. 시간 간격마다.
+        if (_timer >= _interval) 
         {
             _timer = 0f;
 
@@ -26,7 +25,7 @@ public class AutoClicker : MonoBehaviour
                 ClickInfo clickInfo = new ClickInfo
                 {
                     Type = EClickType.Auto,
-                    Damage = _damage,
+                    Damage = GameManager.Instance.Damage,
                 };
 
                 clickableScript.OnClick(clickInfo);

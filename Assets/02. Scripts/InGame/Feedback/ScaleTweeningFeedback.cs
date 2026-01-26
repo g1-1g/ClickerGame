@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ScaleTweeningFeedback : MonoBehaviour
+public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
 {
     private ClickTarget _owner;
 
@@ -10,7 +10,7 @@ public class ScaleTweeningFeedback : MonoBehaviour
         _owner = GetComponent<ClickTarget>();
     }
 
-    public void PlayTween()
+    public void Play()
     {
         _owner.transform.DOKill();
         _owner.transform.DOScale(1.1f, 0.3f).OnComplete(() =>

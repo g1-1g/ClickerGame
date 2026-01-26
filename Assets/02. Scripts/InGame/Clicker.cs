@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Clicker : MonoBehaviour
 {
+
+    [SerializeField] private int _damage = 10;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -22,7 +24,17 @@ public class Clicker : MonoBehaviour
         if (hit.collider != null)
         {
             IClickable clickable = hit.collider.GetComponent<IClickable>();
-            clickable?.OnClick(clickable);
+
+            ClickInfo clickInfo = new ClickInfo
+            {
+                Type = EClickType.Manual,
+                Damage = _damage,
+                Position = hit.point,
+            };
+
+            clickable?.OnClick(clickInfo);
         }
     }
 }
+
+

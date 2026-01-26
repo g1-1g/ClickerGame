@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IClickable 
 {
-    bool OnClick(IClickable clickInfo);
+    bool OnClick(ClickInfo clickInfo);
 }

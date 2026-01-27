@@ -7,13 +7,22 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
+    [SerializeField]
+    private CatLevel _currentCat;
+
+
     private float _heartsPerClick;
     private float _totalHeart;
+
+    private CatLevelDatabaseSO _currentCatDatabase;
+
+    public CatLevel CurrentCat => _currentCat;
 
     public float HeartsPerClick;
 
     public event Action<float> OnTotalChange;
     public event Action<float> OnHeartGet;
+    public event Action<CatLevelDatabaseSO> OnCatChange;
 
     private void Awake()
     {
@@ -35,6 +44,7 @@ public class GameManager : MonoBehaviour
         float value = _totalHeart + heartAmount;
 
         SetTotalHeart(value);
+        CurrentCat.AffectionUp(heartAmount);
         OnHeartGet?.Invoke(heartAmount);
     }
 
@@ -42,6 +52,12 @@ public class GameManager : MonoBehaviour
     {
         _totalHeart = value;
         OnTotalChange?.Invoke(_totalHeart);
+    }
+
+    public void SetCat(CatLevelDatabaseSO database)
+    {
+        _currentCatDatabase = database;
+        OnCatChange?.Invoke(database);
     }
 
     public void IncreaseHeartPerClick(float value)

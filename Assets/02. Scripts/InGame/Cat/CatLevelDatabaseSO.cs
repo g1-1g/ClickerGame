@@ -4,16 +4,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CatLevelDatabaseSO", menuName = "ScriptableObjects/CatLevelDatabaseSO", order = 0)]
 public class CatLevelDatabaseSO : ScriptableObject
 {
-    [Header("레벨 데이터 목록")]
-    public CatLevelDataSO[] levels;
+    [Header("고양이 이름")]
+    [SerializeField]
+    private string _name;
 
-    public AnimationClip _levelUpClip;
+    [Header("레벨 데이터 목록")]
+    [SerializeField]
+    private CatLevelDataSO[] _levels;
+
+    [Header("고양이 이미지")]
+    [SerializeField]
+    private Sprite _image;
+
+    public AnimationClip LevelUpClip;
+    public string Name { get { return _name; } }
+    public Sprite Image { get { return _image; } }
+
     public CatLevelDataSO GetLevelData(int level)
     {
         int index = level - 1; // 배열은 0부터 시작
-        if (index >= 0 && index < levels.Length)
+        if (index >= 0 && index < _levels.Length)
         {
-            return levels[index];
+            return _levels[index];
         }
 
         Debug.LogWarning($"레벨 {level}에 해당하는 데이터가 없습니다.");
@@ -22,6 +34,6 @@ public class CatLevelDatabaseSO : ScriptableObject
 
     public int GetMaxLevel()
     {
-        return levels.Length;
+        return _levels.Length;
     }
 }

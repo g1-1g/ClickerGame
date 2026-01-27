@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 347cc92a966409241a798b3c0c4e5e97, type: 3}
+  m_Name: CatLevelData 2
+  m_EditorClassIdentifier: Assembly-CSharp::CatLevelDataSO
+  Level: 2
+  RequiredAffection: 1000
+  IdleAnimation: {fileID: 7400000, guid: d8b3b8f7b86f73a4188893bed76a6585, type: 2}
+  PetAnimation: {fileID: 7400000, guid: 7bdddaccebf42f74488d026efaa2afd5, type: 2}
+  LevelUpAnimation: {fileID: 7400000, guid: 18f31b79886e7664290f1cb478533c41, type: 2}
+  LevelName: "\uB3C4\uB3C4\uB0E5\uC774"

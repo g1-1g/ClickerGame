@@ -4,6 +4,9 @@ using UnityEngine;
 public class CatLevelDataSO : ScriptableObject
 {
     [Header("레벨 정보")]
+    [Tooltip("레벨 Index")]
+    public int Level;
+
     [Tooltip("이 레벨에 도달하기 위해 필요한 총 친밀도")]
     public int RequiredAffection;
 

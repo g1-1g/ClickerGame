@@ -12,7 +12,7 @@ public class ColorFlashFeedback : MonoBehaviour, IFeedback
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    public void Play()
+    public void Play(Vector3 hisPosition)
     {
         if (_coroutine != null)
         {

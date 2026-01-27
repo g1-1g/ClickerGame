@@ -39,7 +39,7 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
         _animator.SetTrigger(_levelUpHash);
     }
 
-    public void Play()
+    public void Play(Vector3 hisPosition)
     {
         PetTrigger();
     }

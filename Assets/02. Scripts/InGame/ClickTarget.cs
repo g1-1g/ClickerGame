@@ -9,7 +9,7 @@ public class ClickTarget : MonoBehaviour, IClickable
         var feedbacks = GetComponentsInChildren<IFeedback>();
         foreach ( var feedback in feedbacks )
         {
-            feedback.Play();
+            feedback.Play(clickInfo.Position);
         }
 
         return true;

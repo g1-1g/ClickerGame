@@ -4,7 +4,7 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 {
     private Animator _animator;
     private AnimatorOverrideController overrideController;
-    private CatLevel _level;
+    private Cat _cat;
     private int _petCount;
 
     [SerializeField] private AnimationClip defaultIdleClip;
@@ -17,11 +17,11 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
     void Awake()
     {
         _animator = GetComponent<Animator>();
-        _level = GetComponent<CatLevel>();
+        _cat = GetComponent<Cat>();
         overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = overrideController;
 
-        _level.OnLevelChanged += AnimationInit;
+        _cat.OnLevelChanged += AnimationInit;
     }
     public void AnimationInit(CatLevelDataSO data)
     {
@@ -57,6 +57,6 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     private void OnDestroy()
     {
-        _level.OnLevelChanged -= AnimationInit;
+        _cat.OnLevelChanged -= AnimationInit;
     }
 }

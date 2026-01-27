@@ -1,18 +1,30 @@
 using System;
 using UnityEngine;
 
-public class CatLevel : MonoBehaviour
+public class Cat : MonoBehaviour
 {
     private int _level;
     private float _affection = 0;
 
     private CatAnimationPlayer _player;
-   
+
+    [Header("고양이 이름")]
+    [SerializeField]
+    private string _name;
+
+
+    [Header("고양이 이미지")]
+    [SerializeField]
+    private Sprite _image;
+
+    public string Name => _name;
+    public Sprite Image => _image;
 
     [SerializeField]
     private CatLevelDatabaseSO _catLevelsDatabase;
 
     private CatLevelDataSO _currentLevelData;
+
 
     public float AffectionRatio
     {
@@ -34,6 +46,7 @@ public class CatLevel : MonoBehaviour
 
     public event Action<CatLevelDataSO> OnLevelChanged;
     public event Action<float> OnAffectionChanged;
+    public event Action<String> OnNameChanged;
     public void LevelUp()
     {
         if (_catLevelsDatabase.GetMaxLevel() == _level)
@@ -52,6 +65,11 @@ public class CatLevel : MonoBehaviour
         _player.LevelUpTrigger();
     }
 
+    public void NameChange(string name)
+    {
+        _name = name;
+        OnNameChanged?.Invoke(name);
+    }
     public void AffectionUp(float value)
     {
         _affection += value;

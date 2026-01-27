@@ -15,23 +15,26 @@ public class UI_SetProfile : MonoBehaviour
     [SerializeField] private float _doTweenDuration;
     void Start()
     {
-        CatLevel cat = GameManager.Instance.CurrentCat;
+        Cat cat = GameManager.Instance.CurrentCat;
         
         Init();
     }
 
     private void Init()
     {
-        CatLevel cat = GameManager.Instance.CurrentCat;
+        Cat cat = GameManager.Instance.CurrentCat;
 
         cat.OnAffectionChanged -= AffectionUpdate;
         cat.OnLevelChanged -= LevelUpdate;
         cat.OnAffectionChanged += AffectionUpdate;
         cat.OnLevelChanged += LevelUpdate;
+        
+        cat.OnNameChanged -= CatNameUpdate;
+        cat.OnNameChanged += CatNameUpdate;
 
         _affectionSlider.value = 0;
-        _image.sprite = cat.LevelDatabase.Image;
-        _nameText.text = cat.LevelDatabase.Name;
+        _image.sprite = cat.Image;
+        _nameText.text = cat.Name;
     }
 
     public void LevelUpdate(CatLevelDataSO data)
@@ -45,17 +48,22 @@ public class UI_SetProfile : MonoBehaviour
         _affectionSlider.DOValue(ratio, _doTweenDuration);
     }
 
-    public void CatUpdate(CatLevel cat)
+    public void CatUpdate(Cat cat)
     {
-        _image.sprite = cat.LevelDatabase.Image;
-        _nameText.text = cat.LevelDatabase.Name;
+        _image.sprite = cat.Image;
+        _nameText.text = cat.Name;
         LevelUpdate(cat.CurrentLevelData);
         AffectionUpdate(cat.AffectionRatio);
     }
 
+    public void CatNameUpdate(string name)
+    {
+        _nameText.text = name;
+    }
+
     public void OnDestroy()
     {
-        CatLevel cat = GameManager.Instance.CurrentCat;
+        Cat cat = GameManager.Instance.CurrentCat;
 
         cat.OnAffectionChanged -= AffectionUpdate;
         cat.OnLevelChanged -= LevelUpdate;

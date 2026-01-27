@@ -4,21 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CatLevelDatabaseSO", menuName = "ScriptableObjects/CatLevelDatabaseSO", order = 0)]
 public class CatLevelDatabaseSO : ScriptableObject
 {
-    [Header("고양이 이름")]
-    [SerializeField]
-    private string _name;
-
     [Header("레벨 데이터 목록")]
     [SerializeField]
     private CatLevelDataSO[] _levels;
 
-    [Header("고양이 이미지")]
-    [SerializeField]
-    private Sprite _image;
-
     public AnimationClip LevelUpClip;
-    public string Name { get { return _name; } }
-    public Sprite Image { get { return _image; } }
 
     public CatLevelDataSO GetLevelData(int level)
     {

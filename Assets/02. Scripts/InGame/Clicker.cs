@@ -4,7 +4,7 @@ public class Clicker : MonoBehaviour
 {
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
         {
             Vector2 mousePos = Input.mousePosition;
 

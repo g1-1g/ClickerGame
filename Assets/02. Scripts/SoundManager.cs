@@ -18,6 +18,8 @@ public class SoundManager : MonoBehaviour
             return;
         }
         _instance = this;
+
+        TryGetComponent<AudioSource>(out _audioSource);
     }
 
     public void Play(AudioClip clip)

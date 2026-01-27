@@ -3,34 +3,22 @@ using UnityEngine.UIElements;
 
 public class AutoClicker : MonoBehaviour
 {      
-    [SerializeField] private float _interval;   
-    private float _timer;
+    [SerializeField] GameObject[] clickables;
 
-    private void Update()
+    private void Start()
     {
-        _timer += Time.deltaTime;
+        clickables = GameObject.FindGameObjectsWithTag("ClickTarget");
+    }
 
-        if (_timer >= _interval) 
+    protected void Click(IClickable clickableScript, Vector2 position)
+    {
+        ClickInfo clickInfo = new ClickInfo
         {
-            _timer = 0f;
+            Type = EClickType.Auto,
+            HeartsAmount = GameManager.Instance.HeartsPerClick,
+            Position = position,
+        };
 
-
-            // 2. Clickable 게임 오브젝트를 모두 찾아와서 (여러분들은 캐싱하세요.)
-            GameObject[] clickables = GameObject.FindGameObjectsWithTag("ClickTarget");
-
-            foreach (GameObject clickable in clickables)
-            {
-                // 3. 클릭한다.
-                IClickable clickableScript = clickable.GetComponent<IClickable>();
-                ClickInfo clickInfo = new ClickInfo
-                {
-                    Type = EClickType.Auto,
-                    HeartsAmount = GameManager.Instance.HeartsPerClick,
-                };
-
-                clickableScript.OnClick(clickInfo);
-            }
-
-        }
+        clickableScript.OnClick(clickInfo);
     }
 }

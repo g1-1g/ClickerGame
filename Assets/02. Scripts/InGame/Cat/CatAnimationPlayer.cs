@@ -5,6 +5,7 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
     private Animator _animator;
     private AnimatorOverrideController overrideController;
     private CatLevel _level;
+    private int _petCount;
 
     [SerializeField] private AnimationClip defaultIdleClip;
     [SerializeField] private AnimationClip defaultPetClip;
@@ -29,9 +30,9 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
         //overrideController[defaultLevelUpClip] = data.LevelUpAnimation;
     }
 
-    public void PetTrigger()
+    public void SetPetBool(bool value)
     {
-        _animator.SetTrigger(_petHash);
+        _animator.SetBool(_petHash, value);
     }
 
     public void LevelUpTrigger()
@@ -41,7 +42,17 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     public void Play(ClickInfo clickInfo)
     {
-        PetTrigger();
+        _petCount++;
+        SetPetBool(true);
+    }
+
+    public void OnPlayEnd()
+    {
+        if (_petCount <= 1)
+        {
+            SetPetBool(false);
+        }
+        _petCount = 0;
     }
 
     private void OnDestroy()

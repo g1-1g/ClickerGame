@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Good2
+  m_Name: mouse
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -667540111, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
+      value: {fileID: 3273106635956874295, guid: 8a97aa20925375541af17be87372567a, type: 3}
+    - time: 0.083333336
+      value: {fileID: 3974886466118920850, guid: 8a97aa20925375541af17be87372567a, type: 3}
+    - time: 0.16666667
+      value: {fileID: 6305165469695559055, guid: 8a97aa20925375541af17be87372567a, type: 3}
     - time: 0.25
-      value: {fileID: 590355769, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
-    - time: 0.5
-      value: {fileID: 333302742, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
-    - time: 0.75
-      value: {fileID: 704408846, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
+      value: {fileID: -98744705713711496, guid: 8a97aa20925375541af17be87372567a, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,16 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -667540111, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
-    - {fileID: 590355769, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
-    - {fileID: 333302742, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
-    - {fileID: 704408846, guid: cf58eed74584bdf48989cf94636aa70e, type: 3}
+    - {fileID: 3273106635956874295, guid: 8a97aa20925375541af17be87372567a, type: 3}
+    - {fileID: 3974886466118920850, guid: 8a97aa20925375541af17be87372567a, type: 3}
+    - {fileID: 6305165469695559055, guid: 8a97aa20925375541af17be87372567a, type: 3}
+    - {fileID: -98744705713711496, guid: 8a97aa20925375541af17be87372567a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.8333333
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -78,11 +78,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.6666667
-    functionName: OnPlayEnd
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

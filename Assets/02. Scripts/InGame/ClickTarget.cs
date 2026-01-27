@@ -9,9 +9,10 @@ public class ClickTarget : MonoBehaviour, IClickable
         var feedbacks = GetComponentsInChildren<IFeedback>();
         foreach ( var feedback in feedbacks )
         {
-            feedback.Play(clickInfo.Position);
+            feedback.Play(clickInfo);
         }
 
+        GameManager.Instance.GetHeart(clickInfo.HeartsAmount);
         return true;
     }
 }

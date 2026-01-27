@@ -4,6 +4,6 @@ using UnityEngine;
 public struct ClickInfo
 {
     public EClickType Type;
-    public float Damage;
+    public float HeartsAmount;
     public Vector2 Position;
 }

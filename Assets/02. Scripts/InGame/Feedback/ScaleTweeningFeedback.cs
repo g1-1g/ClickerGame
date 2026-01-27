@@ -10,7 +10,7 @@ public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
         _owner = GetComponent<ClickTarget>();
     }
 
-    public void Play(Vector3 hisPosition)
+    public void Play(ClickInfo clickInfo)
     {
         _owner.transform.DOKill();
         _owner.transform.DOScale(1.1f, 0.3f).OnComplete(() =>

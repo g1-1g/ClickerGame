@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IFeedback
 {
-    public void Play(Vector3 hisPosition);
+    public void Play(ClickInfo clickInfo);
 }

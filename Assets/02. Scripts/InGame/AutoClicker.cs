@@ -25,7 +25,7 @@ public class AutoClicker : MonoBehaviour
                 ClickInfo clickInfo = new ClickInfo
                 {
                     Type = EClickType.Auto,
-                    Damage = GameManager.Instance.Damage,
+                    HeartsAmount = GameManager.Instance.HeartsPerClick,
                 };
 
                 clickableScript.OnClick(clickInfo);

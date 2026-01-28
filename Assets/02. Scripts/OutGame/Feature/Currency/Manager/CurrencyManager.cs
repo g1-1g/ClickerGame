@@ -1,11 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum ECurrencyType
-{
-    Heart,
-    Count,
-}
+
 public class CurrencyManager : MonoBehaviour
 {
     //CRUD

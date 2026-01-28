@@ -13,6 +13,7 @@ public class UI_SetProfile : MonoBehaviour
     [SerializeField] private Slider _affectionSlider;
 
     [SerializeField] private float _doTweenDuration;
+
     void Start()
     {
         Cat cat = GameManager.Instance.CurrentCat;
@@ -45,6 +46,8 @@ public class UI_SetProfile : MonoBehaviour
 
     public void AffectionUpdate(float ratio)
     {
+        _affectionSlider.DOComplete();
+
         _affectionSlider.DOValue(ratio, _doTweenDuration);
     }
 

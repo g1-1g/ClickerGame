@@ -43,15 +43,15 @@ public class UI_Popup : MonoBehaviour
     {
         if (_isOpened)
         {
-            Hide();
+            Up();
         }
         else
         {
-            Show();
+            Down();
         }
     }
 
-    public void Show()
+    public void Up()
     {
         if (_timeStop)
         {
@@ -68,7 +68,7 @@ public class UI_Popup : MonoBehaviour
         _isOpened = true;
     }
 
-    public void Hide()
+    public void Down()
     {
         if (_timeStop)
         {

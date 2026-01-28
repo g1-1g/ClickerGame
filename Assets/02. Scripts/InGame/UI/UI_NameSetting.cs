@@ -16,13 +16,17 @@ public class UI_NameSetting : MonoBehaviour
     {
         _button.onClick.AddListener(SetName);
         _popup = GetComponent<UI_Popup>();
-        _popup.Show();
+
+        if (!GameManager.Instance.DefaultName)
+        {
+            _popup.Up();
+        } 
     }
 
     private void SetName()
     {
         GameManager.Instance.SetCatName(_inputField.text);
-        _popup.Hide();
+        _popup.Down();
     }
 
     private void OnDestroy()

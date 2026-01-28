@@ -358,8 +358,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 131.13, y: -22.7}
-  m_SizeDelta: {x: 156.4, y: 50}
+  m_AnchoredPosition: {x: 140, y: -18}
+  m_SizeDelta: {x: 251.78, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &116035334
 MonoBehaviour:
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 17
-  m_HorizontalAlignment: 16
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2533,7 +2533,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915201800}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2954,7 +2954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fe8a3f18f20294bb93efc4d32d9719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoClickerSpawner
-  _interval: 2
+  _interval: 5
 --- !u!114 &1202446434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3558,6 +3558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2644c67938373479620ddd0eb9cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _defaultName: 0
   _currentCat: {fileID: 1423137149}
   _player: {fileID: 6573408992485362369}
   HeartsPerClick: 10

@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     [SerializeField]
+    private bool _defaultName = true;
+
+    [SerializeField]
     private Cat _currentCat;
     [SerializeField]
     private VFXPlayer _player;
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     private CatLevelDatabaseSO _currentCatDatabase;
 
     public Cat CurrentCat => _currentCat;
+    public bool DefaultName => _defaultName;
 
     public float HeartsPerClick;
 

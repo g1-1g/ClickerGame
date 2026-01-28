@@ -20,7 +20,7 @@ public class CurrencyManager : MonoBehaviour
 
     public event Action<double> OnHeartChange;
 
-
+    private CurrencyRepository _repository;
 
     private void Awake()
     {
@@ -30,13 +30,28 @@ public class CurrencyManager : MonoBehaviour
             return;
         }
         _instance = this;
+
+        _repository = new CurrencyRepository();
     }
 
     private void Start()
     {
-        Load();
-        OnHeartChange?.Invoke(Heart);
+        LoadData();
     }
+
+    private void LoadData()
+    {
+        _currencies = _repository.Load().Currencies;
+    }
+
+    private void SaveData()
+    {
+        CurrencySaveData data = new CurrencySaveData();
+        data.Currencies = _currencies;
+
+        _repository.Save(data);
+    }
+
 
     public void Add(ECurrencyType type, double amount)
     {
@@ -44,6 +59,7 @@ public class CurrencyManager : MonoBehaviour
 
         GameManager.Instance.CurrentCat.AffectionUp(amount);
         OnHeartChange?.Invoke(Heart);
+        SaveData();
     }
 
     public bool TrySpendHeart(ECurrencyType type, double amount)
@@ -55,29 +71,7 @@ public class CurrencyManager : MonoBehaviour
 
         _currencies[(int)type] -= amount;
         OnHeartChange?.Invoke(Heart);
+        SaveData();
         return true;
-    }
-
-    private void Save()
-    {
-        for (int i = 0; i < _currencies.Length; i++)
-        {
-            var type = (ECurrencyType)i;
-            PlayerPrefs.SetString(type.ToString(), _currencies[(int)type].ToString());
-        }
-    }
-
-    private void Load()
-    {
-        for (int i = 0; i < _currencies.Length; i++)
-        {
-            var type = (ECurrencyType)i;
-            _currencies[(int)type] = double.Parse(PlayerPrefs.GetString(type.ToString()));
-        }
-    }
-
-    private void OnDestroy()
-    {
-        Save();
     }
 }

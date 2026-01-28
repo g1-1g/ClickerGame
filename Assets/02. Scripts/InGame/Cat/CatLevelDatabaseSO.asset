@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1117ac9cac51442952b612bdccc3e3, type: 3}
   m_Name: CatLevelDatabaseSO
   m_EditorClassIdentifier: Assembly-CSharp::CatConfigSO
-  _name: Mozzi
   _levels:
   - {fileID: 11400000, guid: acc5703f5edb99e4da3051abe691e3f3, type: 2}
   - {fileID: 11400000, guid: 7f01b9de6f8312844850159f0769b9d5, type: 2}
-  _image: {fileID: -8001467137217350061, guid: f8553e17a4b62404fabe26880d681099, type: 3}
+  - {fileID: 11400000, guid: d153aeab682871540a0f110118c084d9, type: 2}
   LevelUpClip: {fileID: 0}

@@ -1581,6 +1581,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e18badf0a7ef28d4a930a85d2fda9269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_BasicAnimation
+--- !u!1 &660991864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 660991866}
+  - component: {fileID: 660991865}
+  m_Layer: 0
+  m_Name: CurrencyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &660991865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660991864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cbad2bad4f4f0d4c90c21be6a14d74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurrencyManager
+--- !u!4 &660991866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660991864}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 304.738, y: 923.7964, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &681263788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,7 +3616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2644c67938373479620ddd0eb9cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _defaultName: 0
+  _defaultName: 1
   _currentCat: {fileID: 1423137149}
   _player: {fileID: 6573408992485362369}
   HeartsPerClick: 10
@@ -14719,3 +14763,4 @@ SceneRoots:
   - {fileID: 1683516679}
   - {fileID: 6573408992485362368}
   - {fileID: 1055871331}
+  - {fileID: 660991866}

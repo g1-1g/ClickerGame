@@ -32,6 +32,12 @@ public class CurrencyManager : MonoBehaviour
         _instance = this;
     }
 
+    private void Start()
+    {
+        Load();
+        OnHeartChange?.Invoke(Heart);
+    }
+
     public void Add(ECurrencyType type, double amount)
     {
         _currencies[(int)type] += amount;
@@ -50,5 +56,28 @@ public class CurrencyManager : MonoBehaviour
         _currencies[(int)type] -= amount;
         OnHeartChange?.Invoke(Heart);
         return true;
+    }
+
+    private void Save()
+    {
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            var type = (ECurrencyType)i;
+            PlayerPrefs.SetString(type.ToString(), _currencies[(int)type].ToString());
+        }
+    }
+
+    private void Load()
+    {
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            var type = (ECurrencyType)i;
+            _currencies[(int)type] = double.Parse(PlayerPrefs.GetString(type.ToString()));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Save();
     }
 }

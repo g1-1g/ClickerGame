@@ -12,7 +12,7 @@ public class ClickTarget : MonoBehaviour, IClickable
             feedback.Play(clickInfo);
         }
 
-        GameManager.Instance.GetHeart(clickInfo.HeartsAmount);
+        CurrencyManager.Instance.Add(ECurrencyType.Heart, clickInfo.HeartsAmount);
         return true;
     }
 }

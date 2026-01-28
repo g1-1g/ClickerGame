@@ -4,7 +4,7 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
     private int _level;
-    private float _affection = 0;
+    private double _affection = 0;
 
     private CatAnimationPlayer _player;
 
@@ -34,12 +34,12 @@ public class Cat : MonoBehaviour
             {
                 return 1;
             }
-            return _affection / _currentLevelData.RequiredAffection;
+            return (float)(_affection / _currentLevelData.RequiredAffection);
         }
     }
 
     public int Level => _level;
-    public float Affection => _affection;
+    public double Affection => _affection;
 
     public CatLevelDataSO CurrentLevelData => _currentLevelData;
     public CatLevelDatabaseSO LevelDatabase => _catLevelsDatabase;
@@ -70,7 +70,7 @@ public class Cat : MonoBehaviour
         _name = name;
         OnNameChanged?.Invoke(name);
     }
-    public void AffectionUp(float value)
+    public void AffectionUp(double value)
     {
         _affection += value;
         

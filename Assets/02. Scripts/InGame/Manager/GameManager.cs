@@ -10,14 +10,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool _defaultName = true;
 
+    private float _heartsPerClick = 10;
+
     [SerializeField]
     private Cat _currentCat;
     [SerializeField]
     private VFXPlayer _player;
-
-
-    private float _heartsPerClick;
-    private float _totalHeart;
 
     private CatLevelDatabaseSO _currentCatDatabase;
 
@@ -26,8 +24,6 @@ public class GameManager : MonoBehaviour
 
     public float HeartsPerClick;
 
-    public event Action<float> OnTotalChange;
-    public event Action<float> OnHeartGet;
     public event Action<CatLevelDatabaseSO> OnCatChange;
 
     private void Awake()
@@ -42,28 +38,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetTotalHeart(0);
+
         _currentCat.OnLevelChanged += OnLevelChanged;
     }
 
     private void OnLevelChanged(CatLevelDataSO sO)
     {
         _player.Play(_currentCat.transform.position);
-    }
-
-    public void GetHeart(float heartAmount)
-    {
-        float value = _totalHeart + heartAmount;
-
-        SetTotalHeart(value);
-        CurrentCat.AffectionUp(heartAmount);
-        OnHeartGet?.Invoke(heartAmount);
-    }
-
-    public void SetTotalHeart(float value)
-    {
-        _totalHeart = value;
-        OnTotalChange?.Invoke(_totalHeart);
     }
 
     public void SetCat(CatLevelDatabaseSO database)
@@ -81,14 +62,14 @@ public class GameManager : MonoBehaviour
         _currentCat.NameChange(name);
     }
 
-    public void IncreaseHeartPerClick(float value)
-    {
-        _heartsPerClick += value;
-    }
-
     public void OnDestroy()
     {
         _currentCat.OnLevelChanged -= OnLevelChanged;
+    }
+
+    public void IncreaseHeartPerClick(float value)
+    {
+        _heartsPerClick += value;
     }
 
 }

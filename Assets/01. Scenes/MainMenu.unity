@@ -699,6 +699,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 274527740}
   m_CullTransparentMesh: 1
+--- !u!1 &296545910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296545912}
+  - component: {fileID: 296545911}
+  m_Layer: 0
+  m_Name: AccountManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &296545911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296545910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c7691497b29ad4dadaa038a4f85b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AccountManager
+--- !u!4 &296545912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296545910}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 752.4836, y: 424.5803, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &296559481
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,6 +2532,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &955038900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 955038902}
+  - component: {fileID: 955038901}
+  m_Layer: 0
+  m_Name: LoginSceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &955038901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955038900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf97521166ca56f4d9077cb2f2119325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoginSceneManager
+  _passwordConfirmObject: {fileID: 685547334}
+  _gotoRegisterButtonObject: {fileID: 1191559509}
+  _loginButtonObject: {fileID: 1627892292}
+  _gotoLoginButtonObject: {fileID: 194192090}
+  _registerButtonObject: {fileID: 559017663}
+  _idInputField: {fileID: 1402111585}
+  _passwordInputField: {fileID: 634684567}
+  _passwordConfirmInputField: {fileID: 391352278}
+  _messageText: {fileID: 1772567546}
+--- !u!4 &955038902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955038900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 752.4836, y: 424.5803, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963627306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,15 +2723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c7691497b29ad4dadaa038a4f85b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoginScene
-  _passwordConfirmObject: {fileID: 685547334}
-  _gotoRegisterButtonObject: {fileID: 1191559509}
-  _loginButtonObject: {fileID: 1627892292}
-  _gotoLoginButtonObject: {fileID: 194192090}
-  _registerButtonObject: {fileID: 559017663}
-  _idInputField: {fileID: 1402111585}
-  _passwordInputField: {fileID: 634684567}
-  _passwordConfirmInputField: {fileID: 391352278}
-  _messageText: {fileID: 1772567546}
 --- !u!1 &1010164698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,7 +3249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
-  _active: 1
+  Active: 1
   _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.05
@@ -3619,7 +3707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
-  _active: 1
+  Active: 1
   _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.05
@@ -3864,7 +3952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa723da3075880b4ea9de6129e133538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
-  _active: 1
+  Active: 1
   _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.15
@@ -4610,7 +4698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
-  _active: 1
+  Active: 1
   _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.05
@@ -5672,7 +5760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
-  _active: 1
+  Active: 1
   _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.05
@@ -5690,3 +5778,5 @@ SceneRoots:
   - {fileID: 1010164702}
   - {fileID: 2002311976}
   - {fileID: 936133690}
+  - {fileID: 296545912}
+  - {fileID: 955038902}

@@ -1,8 +1,6 @@
-using System.Text.RegularExpressions;
-using TMPro;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 public class AccountManager : MonoBehaviour
 {
@@ -11,24 +9,13 @@ public class AccountManager : MonoBehaviour
     private static AccountManager _instance;
     public static AccountManager Instance { get { return _instance; } }
 
+    private Account _currentAccount = null;
 
-    private ESceneMode _mode = ESceneMode.Login;
+    public bool IsLogin => _currentAccount != null;
 
-    // 비밀번호 확인 오브젝트
-    [SerializeField] private GameObject _passwordConfirmObject;
+    public string Email => _currentAccount?.Email ?? string.Empty;
 
-    [SerializeField] private GameObject _gotoRegisterButtonObject;
 
-    [SerializeField] private GameObject _loginButtonObject;
-
-    [SerializeField] private GameObject _gotoLoginButtonObject;
-
-    [SerializeField] private GameObject _registerButtonObject;
-
-    [SerializeField] private TMP_InputField _idInputField;
-    [SerializeField] private TMP_InputField _passwordInputField;
-    [SerializeField] private TMP_InputField _passwordConfirmInputField;
-    [SerializeField] private TextMeshProUGUI _messageText;
 
     private void Awake()
     {
@@ -40,134 +27,57 @@ public class AccountManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Start()
+    public bool TryLogin(string email, string password)
     {
-        AddButtonEvents();
-        Refresh();
 
-        LastEmailSetting();
+        Account account; 
+
+        try
+        {
+            account = new Account(email, password);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        if (!PlayerPrefs.HasKey($"{email}Hash"))
+        {
+            return false;
+        }
+
+        if (!PasswordHasher.VerifyPassword(password, PlayerPrefs.GetString($"{email}Hash"), PlayerPrefs.GetString($"{email}Salt")))
+        {
+            return false;
+        }
+
+        _currentAccount = account;
+
+        PlayerPrefs.SetString("LastEmail", email);
+        return true;
     }
 
-    private void LastEmailSetting()
+    public bool TryRegister(string email, string password)
     {
-        string id = PlayerPrefs.GetString("LastEmail");
-        if (id != null)
+        try
         {
-            _idInputField.text = id;
+            Account account = new Account(email, password);
         }
-    }
-
-    private void AddButtonEvents()
-    {
-        _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(GotoRegister);
-        _loginButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(Login);
-        _gotoLoginButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(GotoLogin);
-        _registerButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(Register);
-    }
-
-    private void RemoveButtonEvents()
-    {
-        _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoRegister);
-        _loginButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(Login);
-        _gotoLoginButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoLogin);
-        _registerButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(Register);
-    }
-
-    private void Refresh()
-    {
-        // 2차 비밀번호 오브젝트는 회원가입 모드일때만 노출
-        _passwordConfirmObject.SetActive(_mode == ESceneMode.Register);
-        _gotoRegisterButtonObject.gameObject.SetActive(_mode == ESceneMode.Login);
-        _loginButtonObject.gameObject.SetActive(_mode == ESceneMode.Login);
-        _gotoLoginButtonObject.gameObject.SetActive(_mode == ESceneMode.Register);
-        _registerButtonObject.gameObject.SetActive(_mode == ESceneMode.Register);
-    }
-
-    private void Login()
-    {
-        string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
+        catch (Exception e)
         {
-            _messageText.text = "아이디를 입력해주세요.";
-            return;
+            return false;
         }
 
-        string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
+        if (PlayerPrefs.HasKey(email))
         {
-            _messageText.text = "패스워드를 입력해주세요.";
-            return;
-        }
-
-        if (!PlayerPrefs.HasKey($"{id}Hash"))
-        {
-            _messageText.text = "아이디를 확인해주세요.";
-            return;
-        }
-
-        
-        
-        if (!PasswordHasher.VerifyPassword(password, PlayerPrefs.GetString($"{id}Hash"),PlayerPrefs.GetString($"{id}Salt")))
-        {
-            _messageText.text = "비밀번호를 확인해주세요.";
-            return;
-        }
-        PlayerPrefs.SetString("LastEmail", id);
-        SceneManager.LoadScene("Roading");
-    }
-
-    private void Register()
-    {
-        string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
-        {
-            _messageText.text = "아이디를 입력해주세요.";
-            return;
-        }
-
-
-        string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
-        {
-            _messageText.text = "패스워드를 입력해주세요.";
-            return;
-        }
-
-        string password2 = _passwordConfirmInputField.text;
-        if (string.IsNullOrEmpty(password2) || password != password2)
-        {
-            _messageText.text = "패스워드가 일치하지 않습니다..";
-            return;
-        }
-
-        if (PlayerPrefs.HasKey($"{id}Hash"))
-        {
-            _messageText.text = "중복된 아이디입니다.";
-            return;
+            return false;
         }
 
         string salt = PasswordHasher.GenerateSalt();
-        PlayerPrefs.SetString($"{id}Salt", salt);
-        PlayerPrefs.SetString($"{id}Hash", PasswordHasher.HashPassword(password, salt));
-        _messageText.text = "";
-        GotoLogin();
-    }
+        PlayerPrefs.SetString($"{email}Salt", salt);
+        PlayerPrefs.SetString($"{email}Hash", PasswordHasher.HashPassword(password, salt));
 
-    private void GotoLogin()
-    {
-        _mode = ESceneMode.Login;
-        Refresh();
-    }
-
-    private void GotoRegister()
-    {
-        _mode = ESceneMode.Register;
-        Refresh();
-    }
-
-    private void OnDestroy()
-    {
-        RemoveButtonEvents();
+        return true;
     }
 
 }

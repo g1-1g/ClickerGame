@@ -19,7 +19,7 @@ public class UI_TotalHearts : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
+        if (CatManager.Instance != null)
         {
             CurrencyManager.OnHeartChange -= TotalUpdate;
         }  

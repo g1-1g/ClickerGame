@@ -55,7 +55,7 @@ public class CurrencyManager : MonoBehaviour
     {
         _currencies[(int)type] += amount;
 
-        GameManager.Instance.CurrentCat.AffectionUp(amount);
+        CatManager.Instance.CurrentCat.AffectionUp(amount);
         OnHeartChange?.Invoke(Heart);
         SaveData();
     }

@@ -43,7 +43,7 @@ public class AutoClickerSpawner : MonoBehaviour
 
 
         MouseAutoClicker clicker = autoClickerObject.GetComponent<MouseAutoClicker>();
-        clicker.MouseGo(GameManager.Instance.CurrentCat.transform.position);
+        clicker.MouseGo(CatManager.Instance.CurrentCat.transform.position);
     }
 
     public void Despawn(GameObject gameObject)

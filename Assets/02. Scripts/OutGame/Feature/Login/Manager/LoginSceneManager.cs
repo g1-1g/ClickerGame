@@ -4,15 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoginScene : MonoBehaviour
+public class LoginSceneManager : MonoBehaviour
 {
-    // 로그인씬 (로그인/회원가입) -> 게임씬
-
-    private enum ESceneMode
-    {
-        Login,
-        Register
-    }
+    // 로그인씬 (로그인/회원가입) -> 게임씬   
 
     private ESceneMode _mode = ESceneMode.Login;
 

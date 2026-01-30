@@ -5,7 +5,7 @@ using UnityEngine;
 public class CurrencyManager : MonoBehaviour
 {
     //CRUD
-    //ÀçÈ­¿¡ ´ëÇÑ »ý¼º / Á¶È¸ / »ç¿ë / ¼Ò¸ð / ÀÌº¥Æ®
+    //ìž¬í™”ì— ëŒ€í•œ ìƒì„± / ì¡°íšŒ / ì‚¬ìš© / ì†Œëª¨ / ì´ë²¤íŠ¸
 
     private static CurrencyManager _instance;
     public static CurrencyManager Instance { get { return _instance; } }
@@ -14,7 +14,9 @@ public class CurrencyManager : MonoBehaviour
     
     public double Heart => _currencies[(int)ECurrencyType.Heart];
 
-    public event Action<double> OnHeartChange;
+    public static Action<EUpgradeType> OnDataChanged { get; internal set; }
+
+    public static event Action<double> OnHeartChange;
 
     private CurrencyRepository _repository;
 
@@ -58,7 +60,7 @@ public class CurrencyManager : MonoBehaviour
         SaveData();
     }
 
-    public bool TrySpendHeart(ECurrencyType type, double amount)
+    public bool TrySpend(ECurrencyType type, double amount)
     {
         if (amount > _currencies[(int)type])
         {
@@ -68,6 +70,16 @@ public class CurrencyManager : MonoBehaviour
         _currencies[(int)type] -= amount;
         OnHeartChange?.Invoke(Heart);
         SaveData();
+        return true;
+    }
+
+    public bool CanAfford(ECurrencyType type, double amount)
+    {
+        if (amount > _currencies[(int)type])
+        {
+            return false;
+        }
+
         return true;
     }
 }

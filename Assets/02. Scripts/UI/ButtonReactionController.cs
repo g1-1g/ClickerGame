@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 public class ButtonReactionController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 
-    [SerializeField]
-    private bool _active = true;
+    public bool Active = true;
 
     [Header("Hover Settings")]
     [SerializeField] private bool _isMove = false;
@@ -29,12 +28,12 @@ public class ButtonReactionController : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void SetActive(bool active)
     {
-        _active = active;
+        Active = active;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!_active) return;
+        if (!Active) return;
         if (_isMove){
             _animator.MoveAndScale(_hoverMoveOffset, _hoverScale, _hoverDuration, _hoverEase);
         }
@@ -47,13 +46,13 @@ public class ButtonReactionController : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!_active) return;
+        if (!Active) return;
         _animator.ResetPositionAndScale(_hoverDuration, Ease.OutQuad);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!_active) return;
+        if (!Active) return;
         _animator.ScaleDownAndRecover(_clickScale, _clickDuration);
     }
 

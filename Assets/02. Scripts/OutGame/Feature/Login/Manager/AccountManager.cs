@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.AdaptivePerformance.Editor;
 using UnityEngine;
 
 
@@ -27,7 +28,7 @@ public class AccountManager : MonoBehaviour
         _instance = this;
     }
 
-    public bool TryLogin(string email, string password)
+    public AuthResult TryLogin(string email, string password)
     {
 
         Account account; 
@@ -38,26 +39,42 @@ public class AccountManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            return false;
+            return new AuthResult()
+            {
+                Success = false,
+                Message = e.Message,
+            };
         }
 
         if (!PlayerPrefs.HasKey($"{email}Hash"))
         {
-            return false;
+            return new AuthResult()
+            {
+                Success = false,
+                Message = "존재하지 않는 이메일입니다..",
+            };
         }
 
         if (!PasswordHasher.VerifyPassword(password, PlayerPrefs.GetString($"{email}Hash"), PlayerPrefs.GetString($"{email}Salt")))
         {
-            return false;
+            return new AuthResult()
+            {
+                Success = false,
+                Message = "이메일과 비밀번호가 일치하지 않습니다.",
+            };
         }
 
         _currentAccount = account;
 
         PlayerPrefs.SetString("LastEmail", email);
-        return true;
+        return new AuthResult()
+        {
+            Success = true,
+            Message = "",
+        };
     }
 
-    public bool TryRegister(string email, string password)
+    public AuthResult TryRegister(string email, string password)
     {
         try
         {
@@ -65,19 +82,31 @@ public class AccountManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            return false;
+            return new AuthResult()
+            {
+                Success = false,
+                Message = e.Message,
+            };
         }
 
-        if (PlayerPrefs.HasKey(email))
+        if (PlayerPrefs.HasKey($"{email}Hash"))
         {
-            return false;
+            return new AuthResult()
+            {
+                Success = false,
+                Message = "이미 존재하는 계정입니다.",
+            };
         }
 
         string salt = PasswordHasher.GenerateSalt();
         PlayerPrefs.SetString($"{email}Salt", salt);
         PlayerPrefs.SetString($"{email}Hash", PasswordHasher.HashPassword(password, salt));
 
-        return true;
+        return new AuthResult()
+        {
+            Success = true,
+            Message = "",
+        };
     }
 
 }

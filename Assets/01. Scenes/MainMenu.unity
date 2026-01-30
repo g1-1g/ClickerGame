@@ -3952,6 +3952,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa723da3075880b4ea9de6129e133538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
+  Active: 1
+  _isMove: 0
+  _hoverMoveOffset: {x: 0, y: 0, z: 0}
+  _hoverScale: 1.15
+  _hoverDuration: 0.25
+  _hoverEase: 27
+  _clickScale: 0.85
+  _clickDuration: 0.15
 --- !u!114 &1579315855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4461,9 +4469,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '! Warning Massage
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1fcf728d8ccb3e4f94acf7919d8971d, type: 2}
   m_sharedMaterial: {fileID: -8259905600725486501, guid: b1fcf728d8ccb3e4f94acf7919d8971d, type: 2}

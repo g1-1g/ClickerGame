@@ -99,9 +99,9 @@ public class LoginSceneManager : MonoBehaviour
             return;
         }
         
-        if (!AccountManager.Instance.TryLogin(id, password))
+        if (!AccountManager.Instance.TryLogin(id, password).Success)
         {
-            _messageText.text = "아이디와 비밀번호를 확인해주세요.";
+            _messageText.text = AccountManager.Instance.TryLogin(id, password).Message;
             return;
         }
 
@@ -131,15 +131,9 @@ public class LoginSceneManager : MonoBehaviour
             return;
         }
 
-        if (PlayerPrefs.HasKey($"{id}Hash"))
+        if (!AccountManager.Instance.TryRegister(id, password).Success)
         {
-            _messageText.text = "중복된 아이디입니다.";
-            return;
-        }
-
-        if (!AccountManager.Instance.TryRegister(id, password))
-        {
-            _messageText.text = "아이디와 비밀번호의 형식을 확인해주세요.";
+            _messageText.text = AccountManager.Instance.TryRegister(id, password).Message;
             return;
         }
 

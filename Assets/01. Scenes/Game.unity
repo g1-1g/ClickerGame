@@ -1777,12 +1777,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 654401367}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa723da3075880b4ea9de6129e133538, type: 3}
+  m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
   _active: 1
+  _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
-  _hoverScale: 1.15
+  _hoverScale: 1.05
   _hoverDuration: 0.25
   _hoverEase: 27
   _clickScale: 0.95
@@ -3465,16 +3466,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1250343925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa723da3075880b4ea9de6129e133538, type: 3}
+  m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
   _active: 1
+  _isMove: 1
   _hoverMoveOffset: {x: 0, y: 1150, z: 0}
   _hoverScale: 1
   _hoverDuration: 0.25
-  _hoverEase: 5
+  _hoverEase: 9
   _clickScale: 1
-  _clickDuration: 0
+  _clickDuration: 0.15
 --- !u!114 &1250343930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4146,7 +4148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2644c67938373479620ddd0eb9cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _defaultName: 1
+  _defaultName: 0
   _currentCat: {fileID: 1423137149}
   _player: {fileID: 6573408992485362369}
   HeartsPerClick: 10

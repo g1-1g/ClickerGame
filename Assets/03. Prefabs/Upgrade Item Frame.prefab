@@ -784,10 +784,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6758701238056026979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa723da3075880b4ea9de6129e133538, type: 3}
+  m_Script: {fileID: 11500000, guid: ed9626d422748ac4f8d777a7235a7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonReactionController
   _active: 1
+  _isMove: 0
   _hoverMoveOffset: {x: 0, y: 0, z: 0}
   _hoverScale: 1.05
   _hoverDuration: 0.25

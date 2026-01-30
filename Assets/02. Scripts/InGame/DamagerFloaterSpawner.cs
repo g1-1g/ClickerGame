@@ -11,7 +11,7 @@ public class DamagerFloaterSpawner : MonoBehaviour
     private LeanGameObjectPool _pool;
 
     [SerializeField]
-    private Transform _canvas;
+    private Transform _poolParent;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class DamagerFloaterSpawner : MonoBehaviour
     {
         Vector2 screenPos = Camera.main.WorldToScreenPoint(clickInfo.Position);
 
-        var floaterObject = _pool.Spawn(Vector3.zero, Quaternion.identity, _canvas);
+        var floaterObject = _pool.Spawn(Vector3.zero, Quaternion.identity, _poolParent);
 
         if (floaterObject.TryGetComponent<RectTransform>(out var rectTransform))
         {

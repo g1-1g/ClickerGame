@@ -22,7 +22,7 @@ public class HeartAmountVFXSpawner : MonoBehaviour
 
     public void ShowAmountVFX(ClickInfo clickInfo)
     {
-        var floaterObject = _pool.Spawn(clickInfo.Position, Quaternion.identity);
+        var floaterObject = _pool.Spawn(clickInfo.Position, Quaternion.identity, transform);
 
         VFXFloater floater = floaterObject.GetComponent<VFXFloater>();
     }

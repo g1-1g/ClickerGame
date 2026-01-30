@@ -10,6 +10,7 @@ public class ButtonReactionController : MonoBehaviour, IPointerEnterHandler, IPo
     private bool _active = true;
 
     [Header("Hover Settings")]
+    [SerializeField] private bool _isMove = false;
     [SerializeField] private Vector3 _hoverMoveOffset = new Vector3(0f, 0f, 0f);
     [SerializeField] private float _hoverScale = 1.15f;
     [SerializeField] private float _hoverDuration = 0.25f;
@@ -34,7 +35,14 @@ public class ButtonReactionController : MonoBehaviour, IPointerEnterHandler, IPo
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_active) return;
-        _animator.MoveAndScale(_hoverMoveOffset, _hoverScale, _hoverDuration, _hoverEase);
+        if (_isMove){
+            _animator.MoveAndScale(_hoverMoveOffset, _hoverScale, _hoverDuration, _hoverEase);
+        }
+        else
+        {
+            _animator.Scale(_hoverScale, _hoverDuration, _hoverEase);
+        }
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)

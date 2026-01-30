@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoginSceneManager : MonoBehaviour
+public class AccountManager : MonoBehaviour
 {
     // 로그인씬 (로그인/회원가입) -> 게임씬   
+
+    private static AccountManager _instance;
+    public static AccountManager Instance { get { return _instance; } }
+
 
     private ESceneMode _mode = ESceneMode.Login;
 
@@ -26,12 +30,15 @@ public class LoginSceneManager : MonoBehaviour
     [SerializeField] private TMP_InputField _passwordConfirmInputField;
     [SerializeField] private TextMeshProUGUI _messageText;
 
-    private string _idPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-    private string _passwordPattern = 
-        @"^(?=.*[a-z])" +        // 소문자 1개 이상
-        @"(?=.*[A-Z])" +         // 대문자 1개 이상
-        @"(?=.*[\W_])" +         // 특수문자 1개 이상
-        @"[A-Za-z\d\W_]{7,20}$"; // 허용 문자 + 길이
+    private void Awake()
+    {
+        if (_instance != null || _instance == gameObject)
+        {
+            Destroy(this);
+            return;
+        }
+        _instance = this;
+    }
 
     private void Start()
     {
@@ -118,11 +125,6 @@ public class LoginSceneManager : MonoBehaviour
             return;
         }
 
-        if (!Regex.IsMatch(id, _idPattern))
-        {
-            _messageText.text = "아이디 형식이 올바르지 않습니다.";
-            return;
-        }
 
         string password = _passwordInputField.text;
         if (string.IsNullOrEmpty(password))
@@ -135,12 +137,6 @@ public class LoginSceneManager : MonoBehaviour
         if (string.IsNullOrEmpty(password2) || password != password2)
         {
             _messageText.text = "패스워드가 일치하지 않습니다..";
-            return;
-        }
-
-        if (!Regex.IsMatch(password, _passwordPattern))
-        {
-            _messageText.text = "패스워드 형식이 올바르지 않습니다.";
             return;
         }
 

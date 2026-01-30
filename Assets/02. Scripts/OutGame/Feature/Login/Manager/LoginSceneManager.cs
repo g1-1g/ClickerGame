@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -6,11 +7,6 @@ using UnityEngine.UI;
 
 public class LoginSceneManager : MonoBehaviour
 {
-     
-
-    private static LoginSceneManager _instance;
-    public static LoginSceneManager Instance { get { return _instance; } }
-
     // 로그인씬 (로그인/회원가입) -> 게임씬  
     private ESceneMode _mode = ESceneMode.Login;
 
@@ -25,6 +21,9 @@ public class LoginSceneManager : MonoBehaviour
 
     [SerializeField] private GameObject _registerButtonObject;
 
+    private Button _loginButton;
+
+
     [SerializeField] private TMP_InputField _idInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     [SerializeField] private TMP_InputField _passwordConfirmInputField;
@@ -32,20 +31,16 @@ public class LoginSceneManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null || _instance == gameObject)
-        {
-            Destroy(this);
-            return;
-        }
-        _instance = this;
+        _loginButton = _loginButtonObject.GetComponentInChildren<Button>();
     }
-
     private void Start()
     {
-        AddButtonEvents();
+        AddEvents();
         Refresh();
 
         LastEmailSetting();
+
+        
     }
 
     private void LastEmailSetting()
@@ -57,18 +52,22 @@ public class LoginSceneManager : MonoBehaviour
         }
     }
 
-    private void AddButtonEvents()
+    private void AddEvents()
     {
+        _idInputField.onValueChanged.AddListener(OnEmailTextChanged);
+
         _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(GotoRegister);
-        _loginButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(Login);
+        _loginButton?.onClick.AddListener(Login);
         _gotoLoginButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(GotoLogin);
         _registerButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(Register);
     }
 
-    private void RemoveButtonEvents()
+    private void RemoveEvents()
     {
+        _idInputField.onValueChanged.RemoveListener(OnEmailTextChanged);
+
         _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoRegister);
-        _loginButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(Login);
+        _loginButton?.onClick.RemoveListener(Login);
         _gotoLoginButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoLogin);
         _registerButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(Register);
     }
@@ -83,22 +82,26 @@ public class LoginSceneManager : MonoBehaviour
         _registerButtonObject.gameObject.SetActive(_mode == ESceneMode.Register);
     }
 
-    public void Login()
+    public void OnEmailTextChanged(string email)
     {
-        string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
+        var emailSpec = new AccountEmailSpecification();
+        if (!emailSpec.IsSatisfiedBy(email))
         {
-            _messageText.text = "아이디를 입력해주세요.";
+            _loginButton.interactable = false;
+            _messageText.text = emailSpec.Message;
             return;
         }
 
+        _messageText.text = "";
+        _loginButton.interactable = true;
+    }
+
+    public void Login()
+    {
+        string id = _idInputField.text;
+
         string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
-        {
-            _messageText.text = "패스워드를 입력해주세요.";
-            return;
-        }
-        
+
         if (!AccountManager.Instance.TryLogin(id, password).Success)
         {
             _messageText.text = AccountManager.Instance.TryLogin(id, password).Message;
@@ -111,18 +114,8 @@ public class LoginSceneManager : MonoBehaviour
     private void Register()
     {
         string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
-        {
-            _messageText.text = "아이디를 입력해주세요.";
-            return;
-        }
 
         string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
-        {
-            _messageText.text = "패스워드를 입력해주세요.";
-            return;
-        }
 
         string password2 = _passwordConfirmInputField.text;
         if (string.IsNullOrEmpty(password2) || password != password2)
@@ -155,7 +148,7 @@ public class LoginSceneManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        RemoveButtonEvents();
+        RemoveEvents();
     }
 
 }

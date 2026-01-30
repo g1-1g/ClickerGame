@@ -9,7 +9,7 @@ public class UI_TotalHearts : MonoBehaviour
     void Start()
     {
         TotalUpdate(0);
-        CurrencyManager.Instance.OnHeartChange += TotalUpdate;
+        CurrencyManager.OnHeartChange += TotalUpdate;
     }
 
     void TotalUpdate(double total)
@@ -21,7 +21,7 @@ public class UI_TotalHearts : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            CurrencyManager.Instance.OnHeartChange -= TotalUpdate;
+            CurrencyManager.OnHeartChange -= TotalUpdate;
         }  
     }
 }

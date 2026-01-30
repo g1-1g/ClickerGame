@@ -41,7 +41,7 @@ public class UI_Popup : MonoBehaviour
 
     private void OnButtonClick()
     {
-        if (_isOpened)
+        if (!_isOpened)
         {
             Up();
         }

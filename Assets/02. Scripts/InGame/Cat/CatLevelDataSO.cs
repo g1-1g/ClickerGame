@@ -3,23 +3,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CatLevelData", menuName = "ScriptableObjects/CatLevelData", order = 0)]
 public class CatLevelDataSO : ScriptableObject
 {
-    [Header("·¹º§ Á¤º¸")]
-    [Tooltip("·¹º§ Index")]
+    [Header("ë ˆë²¨ ì •ë³´")]
+    [Tooltip("ë ˆë²¨ Index")]
     public int Level;
 
-    [Tooltip("ÀÌ ·¹º§¿¡ µµ´ŞÇÏ±â À§ÇØ ÇÊ¿äÇÑ ÃÑ Ä£¹Ğµµ")]
+    [Tooltip("ì´ ë ˆë²¨ì— ë„ë‹¬í•˜ê¸° ìœ„í•´ í•„ìš”í•œ ì´ ì¹œë°€ë„")]
     public int RequiredAffection;
 
-    [Header("¾Ö´Ï¸ŞÀÌ¼Ç")]
-    [Tooltip("±âº» Idle ¾Ö´Ï¸ŞÀÌ¼Ç")]
+    [Header("ì• ë‹ˆë©”ì´ì…˜")]
+    [Tooltip("ê¸°ë³¸ Idle ì• ë‹ˆë©”ì´ì…˜")]
     public AnimationClip IdleAnimation;
 
-    [Tooltip("Ä£¹Ğµµ Áõ°¡ ½Ã Àç»ıÇÒ ¾Ö´Ï¸ŞÀÌ¼Ç")]
+    [Tooltip("ì¹œë°€ë„ ì¦ê°€ ì‹œ ì¬ìƒí•  ì• ë‹ˆë©”ì´ì…˜")]
     public AnimationClip PetAnimation;
 
-    [Tooltip("·¹º§¾÷ ½Ã Àç»ıÇÒ ¾Ö´Ï¸ŞÀÌ¼Ç")]
+    [Tooltip("ë ˆë²¨ì—… ì‹œ ì¬ìƒí•  ì• ë‹ˆë©”ì´ì…˜")]
     public AnimationClip LevelUpAnimation;
 
-    [Header("·¹º§ÀÇ ÀÌ¸§")]
+    [Header("ë ˆë²¨ì˜ ì´ë¦„")]
     public string LevelName;
 }

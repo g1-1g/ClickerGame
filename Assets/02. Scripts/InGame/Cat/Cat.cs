@@ -8,23 +8,24 @@ public class Cat : MonoBehaviour
 
     private CatAnimationPlayer _player;
 
-    [Header("°í¾çÀÌ ÀÌ¸§")]
+    [Header("ê³ ì–‘ì´ ì´ë¦„")]
     [SerializeField]
     private string _name;
 
 
-    [Header("°í¾çÀÌ ÀÌ¹ÌÁö")]
+    [Header("ê³ ì–‘ì´ ì´ë¯¸ì§€")]
     [SerializeField]
     private Sprite _image;
-
-    public string Name => _name;
-    public Sprite Image => _image;
 
     [SerializeField]
     private CatLevelDatabaseSO _catLevelsDatabase;
 
     private CatLevelDataSO _currentLevelData;
 
+    public string Name => _name;
+    public Sprite Image => _image;
+
+    public CatLevelDataSO CurrentLevelData => _currentLevelData;
 
     public float AffectionRatio
     {
@@ -40,29 +41,29 @@ public class Cat : MonoBehaviour
 
     public int Level => _level;
     public double Affection => _affection;
-
-    public CatLevelDataSO CurrentLevelData => _currentLevelData;
     public CatLevelDatabaseSO LevelDatabase => _catLevelsDatabase;
 
     public event Action<CatLevelDataSO> OnLevelChanged;
     public event Action<float> OnAffectionChanged;
     public event Action<String> OnNameChanged;
-    public void LevelUp()
+    public bool TryLevelUp()
     {
         if (_catLevelsDatabase.GetMaxLevel() == _level)
         {
-            Debug.Log("ÀÌ¹Ì ÃÖ°í·¹º§ ÀÔ´Ï´Ù.");
-            return;
+            Debug.Log("ì´ë¯¸ ìµœê³ ë ˆë²¨ ìž…ë‹ˆë‹¤.");
+            return false;
         }
         _level++;
+
         _currentLevelData = _catLevelsDatabase.GetLevelData(_level);
 
         _affection = 0;
 
         OnLevelChanged?.Invoke(_currentLevelData);
 
-        if (_level == 1) return;
+        if (_level == 1) return true;
         _player.LevelUpTrigger();
+        return true;
     }
 
     public void NameChange(string name)
@@ -73,10 +74,10 @@ public class Cat : MonoBehaviour
     public void AffectionUp(double value)
     {
         _affection += value;
-        
+
         if (_affection >= _currentLevelData.RequiredAffection)
         {
-            LevelUp();
+            TryLevelUp();
         }
 
         OnAffectionChanged?.Invoke(AffectionRatio);
@@ -89,7 +90,6 @@ public class Cat : MonoBehaviour
 
     private void Start()
     {
-        LevelUp();
+        TryLevelUp();
     }
-    
 }

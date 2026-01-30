@@ -16,14 +16,14 @@ public class UI_SetProfile : MonoBehaviour
 
     void Start()
     {
-        Cat cat = GameManager.Instance.CurrentCat;
+        Cat cat = CatManager.Instance.CurrentCat;
         
         Init();
     }
 
     private void Init()
     {
-        Cat cat = GameManager.Instance.CurrentCat;
+        Cat cat = CatManager.Instance.CurrentCat;
 
         cat.OnAffectionChanged -= AffectionUpdate;
         cat.OnLevelChanged -= LevelUpdate;
@@ -66,7 +66,7 @@ public class UI_SetProfile : MonoBehaviour
 
     public void OnDestroy()
     {
-        Cat cat = GameManager.Instance.CurrentCat;
+        Cat cat = CatManager.Instance.CurrentCat;
 
         cat.OnAffectionChanged -= AffectionUpdate;
         cat.OnLevelChanged -= LevelUpdate;

@@ -8,20 +8,21 @@ public class UI_TotalHearts : MonoBehaviour
 
     void Start()
     {
-        TotalUpdate(0);
-        CurrencyManager.Instance.OnHeartChange += TotalUpdate;
+        TotalUpdate();
+        CurrencyManager.OnCurrencyChanged += TotalUpdate;
     }
 
-    void TotalUpdate(double total)
+    void TotalUpdate()
     {
+        var total = CurrencyManager.Instance.Heart;
         _totalText.text = $"{total}";
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
+        if (CatManager.Instance != null)
         {
-            CurrencyManager.Instance.OnHeartChange -= TotalUpdate;
+            CurrencyManager.OnCurrencyChanged -= TotalUpdate;
         }  
     }
 }

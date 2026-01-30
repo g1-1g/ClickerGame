@@ -1402,6 +1402,10 @@ PrefabInstance:
       propertyPath: m_text
       value: "\uB0E5\uC774\uC758 \uACE8\uACE8\uC1A1"
       objectReference: {fileID: 0}
+    - target: {fileID: 7134205689937980553, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 03d16d39c2425034f96a644e2aa21a49, type: 3}
     - target: {fileID: 7546648252532536120, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
       propertyPath: m_Name
       value: Upgrade Item Frame (3)
@@ -2475,7 +2479,7 @@ PrefabInstance:
     - target: {fileID: 7134205689937980553, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 8721795739787721895, guid: c69c196bd518364418020cc1ca5de458, type: 3}
+      objectReference: {fileID: 21300000, guid: fb10acb6017ad134fb01215745408758, type: 3}
     - target: {fileID: 7546648252532536120, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
       propertyPath: m_Name
       value: Upgrade Item Frame (2)
@@ -4495,6 +4499,10 @@ PrefabInstance:
       propertyPath: m_text
       value: "\uCEA3\uB2E2"
       objectReference: {fileID: 0}
+    - target: {fileID: 7134205689937980553, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0aa539d2b55918443a794c3cb2d8de4c, type: 3}
     - target: {fileID: 7546648252532536120, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
       propertyPath: m_Name
       value: Upgrade Item Frame (4)
@@ -5928,6 +5936,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6521360542212670438, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
+      propertyPath: m_text
+      value: "\uCE04\uB974"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134205689937980553, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0afc7b08933ac504a8bb40bf4eb7d085, type: 3}
     - target: {fileID: 7546648252532536120, guid: fb23617114a68d84dacd59b8e6f8b3db, type: 3}
       propertyPath: m_Name
       value: Upgrade Item Frame

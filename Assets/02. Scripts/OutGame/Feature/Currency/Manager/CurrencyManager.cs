@@ -16,7 +16,7 @@ public class CurrencyManager : MonoBehaviour
 
     public static Action<EUpgradeType> OnDataChanged { get; internal set; }
 
-    public static event Action<double> OnHeartChange;
+    public static event Action OnCurrencyChanged;
 
     private CurrencyRepository _repository;
 
@@ -56,7 +56,7 @@ public class CurrencyManager : MonoBehaviour
         _currencies[(int)type] += amount;
 
         CatManager.Instance.CurrentCat.AffectionUp(amount);
-        OnHeartChange?.Invoke(Heart);
+        OnCurrencyChanged?.Invoke();
         SaveData();
     }
 
@@ -68,7 +68,7 @@ public class CurrencyManager : MonoBehaviour
         }
 
         _currencies[(int)type] -= amount;
-        OnHeartChange?.Invoke(Heart);
+        OnCurrencyChanged?.Invoke();
         SaveData();
         return true;
     }

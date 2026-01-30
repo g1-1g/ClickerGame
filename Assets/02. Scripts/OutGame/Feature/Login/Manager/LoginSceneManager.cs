@@ -22,6 +22,7 @@ public class LoginSceneManager : MonoBehaviour
     [SerializeField] private GameObject _registerButtonObject;
 
     private Button _loginButton;
+    private Button _registerButton;
 
 
     [SerializeField] private TMP_InputField _idInputField;
@@ -32,6 +33,7 @@ public class LoginSceneManager : MonoBehaviour
     private void Awake()
     {
         _loginButton = _loginButtonObject.GetComponentInChildren<Button>();
+        _registerButton = _registerButtonObject.GetComponentInChildren<Button>();
     }
     private void Start()
     {
@@ -39,8 +41,6 @@ public class LoginSceneManager : MonoBehaviour
         Refresh();
 
         LastEmailSetting();
-
-        
     }
 
     private void LastEmailSetting()
@@ -55,6 +55,8 @@ public class LoginSceneManager : MonoBehaviour
     private void AddEvents()
     {
         _idInputField.onValueChanged.AddListener(OnEmailTextChanged);
+        _passwordInputField.onValueChanged.AddListener(OnPasswordTextChanged);
+        _passwordConfirmInputField.onValueChanged.AddListener(OnPasswordConfirmTextChanged);
 
         _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.AddListener(GotoRegister);
         _loginButton?.onClick.AddListener(Login);
@@ -65,6 +67,8 @@ public class LoginSceneManager : MonoBehaviour
     private void RemoveEvents()
     {
         _idInputField.onValueChanged.RemoveListener(OnEmailTextChanged);
+        _passwordInputField.onValueChanged.RemoveListener(OnPasswordTextChanged);
+        _passwordConfirmInputField.onValueChanged.RemoveListener(OnPasswordConfirmTextChanged);
 
         _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoRegister);
         _loginButton?.onClick.RemoveListener(Login);
@@ -84,17 +88,60 @@ public class LoginSceneManager : MonoBehaviour
 
     public void OnEmailTextChanged(string email)
     {
-        var emailSpec = new AccountEmailSpecification();
-        if (!emailSpec.IsSatisfiedBy(email))
+        var spec = new AccountSpecification();
+        if (!spec.IsSatisfiedEmailBy(email))
         {
-            _loginButton.interactable = false;
-            _messageText.text = emailSpec.Message;
+            ButtonInteractableChange(false);
+            _messageText.text = spec.Message;
             return;
         }
 
         _messageText.text = "";
-        _loginButton.interactable = true;
+        ButtonInteractableChange(true);
     }
+    public void OnPasswordTextChanged(string password)
+    {
+        var spec = new AccountSpecification();
+        if (!spec.IsSatisfiedPasswordBy(password))
+        {
+            ButtonInteractableChange(false);
+
+            _messageText.text = spec.Message;
+            return;
+        }
+        ButtonInteractableChange(true);
+        _messageText.text = "";
+        
+    }
+
+    public void OnPasswordConfirmTextChanged(string passwordConfirm)
+    {
+        string password = _passwordInputField.text;
+
+        if (string.IsNullOrEmpty(passwordConfirm) || password != passwordConfirm)
+        {
+            _messageText.text = "패스워드가 일치하지 않습니다.";
+            ButtonInteractableChange(false);
+
+            return;
+        }
+        ButtonInteractableChange(true);
+        _messageText.text = "";
+
+    }
+
+    private void ButtonInteractableChange(bool value)
+    {
+        if (_mode == ESceneMode.Login)
+        {
+            _loginButton.interactable = value;
+        }
+        else
+        {
+            _registerButton.interactable = value;
+        }
+    }
+
 
     public void Login()
     {

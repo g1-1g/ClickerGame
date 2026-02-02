@@ -46,7 +46,7 @@ public class AccountSpecification
             _message = $"비밀번호는 비어있을 수 없습니다.";
             return false;
         }
-        if (!EmailRegex.IsMatch(password))
+        if (!PasswordRegex.IsMatch(password))
         {
             _message = $"올바르지 않은 비밀번호 형식입니다.";
             return false;

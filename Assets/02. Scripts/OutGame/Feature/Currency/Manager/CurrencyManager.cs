@@ -26,12 +26,11 @@ public class CurrencyManager : MonoBehaviour
             return;
         }
         _instance = this;
-
-        _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
     }
 
     private void Start()
     {
+        _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
         LoadData();
     }
 

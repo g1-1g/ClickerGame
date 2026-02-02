@@ -73,7 +73,7 @@ public class Cat : MonoBehaviour
     }
     public void AffectionUp(double value)
     {
-        _affection += value + value * StatManager.Instance.GetStat(EStatType.AffectionGrowthRate);
+        _affection += value + value * StatManager.Instance.GetStat(EItemType.AffectionGrowthRate);
 
         if (_affection >= _currentLevelData.RequiredAffection)
         {

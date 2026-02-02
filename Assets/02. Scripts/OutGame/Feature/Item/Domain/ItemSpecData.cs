@@ -3,9 +3,9 @@ using System.Collections;
 
 
 [Serializable]
-public class UpgradeSpecData
+public class ItemSpecData
 {
-    public EStatType StatType;
+    public EItemType StatType;
     public EModifierType ModifierType;
     public int MaxLevel;
     public int BaseCost;

@@ -26,7 +26,7 @@ public class Clicker : MonoBehaviour
             ClickInfo clickInfo = new ClickInfo
             {
                 Type = EClickType.Manual,
-                HeartsAmount = StatManager.Instance.GetStat(EStatType.HeartPerClick),
+                HeartsAmount = StatManager.Instance.GetStat(EItemType.HeartPerClick),
                 Position = hit.point,
             };
 

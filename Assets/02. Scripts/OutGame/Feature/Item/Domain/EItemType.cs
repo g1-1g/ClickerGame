@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public enum EStatType 
+public enum EItemType 
 {
-    HeartPerClick,      
+    HeartPerClick,
+    AutoHeartRate,
     AffectionGrowthRate,  
-    AutoHeartRate,       
     FeverTime,
     LuckyProbability,
 

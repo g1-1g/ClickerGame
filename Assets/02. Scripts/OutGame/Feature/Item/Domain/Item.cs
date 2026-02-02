@@ -1,9 +1,9 @@
 using System;
 
-public class Upgrade
+public class Item
 {
     // 1. 기획 테이블의 데이터를 가져온다.
-    public readonly UpgradeSpecData SpecData;
+    public readonly ItemSpecData SpecData;
 
 
     // 게임 중간에 바뀌는 데이터 (플레이어가 만들어 가는 값)
@@ -12,7 +12,7 @@ public class Upgrade
     public bool IsMaxLevel => Level >= SpecData.MaxLevel;
 
     // 2. 핵심 규칙(유효성)을 작성한다.
-    public Upgrade(UpgradeSpecData specData)
+    public Item(ItemSpecData specData)
     {
         SpecData = specData;
 
@@ -39,5 +39,10 @@ public class Upgrade
         Level++;
 
         return true;
+    }
+
+    public void SetLevel(int value)
+    {
+        Level = value;
     }
 }

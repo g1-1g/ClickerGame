@@ -8,11 +8,11 @@ public class UpgradeManager : MonoBehaviour
     private static UpgradeManager _instance;
     public static UpgradeManager Instance { get { return _instance; } }
 
-    public static event Action<EUpgradeType> OnDataChanged;
+    public static event Action<EStatType> OnDataChanged;
 
     [SerializeField] private UpgradeSpecTableSO _specTable;
 
-    private Dictionary<EUpgradeType, Upgrade> _upgrades = new();
+    private Dictionary<EStatType, Upgrade> _upgrades = new();
 
     private void Awake()
     {
@@ -26,21 +26,21 @@ public class UpgradeManager : MonoBehaviour
         // 스펙 데이터에 따라 도메인 생성
         foreach (var specData in _specTable.Datas)
         {
-            if (_upgrades.ContainsKey(specData.Type))
+            if (_upgrades.ContainsKey(specData.StatType))
             {
-                throw new Exception($"There is already an upgrade with type {specData.Type}");
+                throw new Exception($"There is already an upgrade with type {specData.StatType}");
             }
 
-            _upgrades.Add(specData.Type, new Upgrade(specData));
+            _upgrades.Add(specData.StatType, new Upgrade(specData));
 
-            OnDataChanged?.Invoke(specData.Type);
+            OnDataChanged?.Invoke(specData.StatType);
         }
     }
 
-    public Upgrade Get(EUpgradeType type) => _upgrades[type] ?? null;
+    public Upgrade Get(EStatType type) => _upgrades[type] ?? null;
     public List<Upgrade> GetAll() => _upgrades.Values.ToList();
 
-    public bool CanLevelUp(EUpgradeType type)
+    public bool CanLevelUp(EStatType type)
     {
         if (!_upgrades.TryGetValue(type, out Upgrade upgrade))
         {
@@ -55,7 +55,7 @@ public class UpgradeManager : MonoBehaviour
         return CurrencyManager.Instance.CanAfford(ECurrencyType.Heart, upgrade.Cost);
     }
 
-    public bool TryLevelUp(EUpgradeType type)
+    public bool TryLevelUp(EStatType type)
     {
         if (!_upgrades.TryGetValue(type, out Upgrade upgrade))
         {
@@ -72,6 +72,7 @@ public class UpgradeManager : MonoBehaviour
             return false;
         }
 
+        StatManager.Instance.ApplyUpgrade(upgrade.SpecData);
         OnDataChanged?.Invoke(type);
 
         return true;

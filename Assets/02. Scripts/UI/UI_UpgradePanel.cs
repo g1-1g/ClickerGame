@@ -25,7 +25,7 @@ public class UI_UpgradePanel : MonoBehaviour
         }
     }
 
-    private void Refresh(EUpgradeType type)
+    private void Refresh(EStatType type)
     {
         var upgrade = UpgradeManager.Instance.Get(type);
 

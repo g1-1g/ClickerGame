@@ -29,11 +29,11 @@ public class UI_UpgradeItem : MonoBehaviour
         _upgrade = upgrade;
 
         NameTextUI.text = upgrade.SpecData.Name;
-        DescriptionTextUI.text = string.Format(upgrade.SpecData.Description, upgrade.HeartGet);
+        DescriptionTextUI.text = string.Format(upgrade.SpecData.Description);
         LevelTextUI.text = $"LV. {upgrade.Level}";
         CostTextUI.text = upgrade.Cost.ToString();
 
-        bool canLevelUp = UpgradeManager.Instance.CanLevelUp(upgrade.SpecData.Type);
+        bool canLevelUp = UpgradeManager.Instance.CanLevelUp(upgrade.SpecData.StatType);
 
         CostTextUI.color = canLevelUp ? Color.white : Color.gray4;
         UpgradeButtonImage.color = canLevelUp ? Color.white : Color.gray4;
@@ -46,7 +46,7 @@ public class UI_UpgradeItem : MonoBehaviour
     {
         if (_upgrade == null) return;
 
-        if (UpgradeManager.Instance.TryLevelUp(_upgrade.SpecData.Type))
+        if (UpgradeManager.Instance.TryLevelUp(_upgrade.SpecData.StatType))
         {
             // todo: 이펙트, 애니메이션, 트위닝
         }

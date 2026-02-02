@@ -12,7 +12,6 @@ public class Upgrade
     public double HeartGet => SpecData.BaseHeartGet + Level * SpecData.HeartGetMultiplier;          // 선형 공식 : 기본 비용 + 레벨 * 증가량 
     public bool IsMaxLevel => Level >= SpecData.MaxLevel;
 
-
     // 2. 핵심 규칙(유효성)을 작성한다.
     public Upgrade(UpgradeSpecData specData)
     {
@@ -25,6 +24,8 @@ public class Upgrade
         if (specData.HeartGetMultiplier <= 0) throw new System.ArgumentException($"하트 획득량의 증가량은 0보다 커야 합니다: {specData.HeartGetMultiplier}");
         if (string.IsNullOrEmpty(specData.Name)) throw new System.ArgumentException("이름은 비어있을 수 없습니다");
         if (string.IsNullOrEmpty(specData.Description)) throw new System.ArgumentException("설명은 비어있을 수 없습니다");
+
+        Level = 1;
     }
 
 

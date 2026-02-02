@@ -14,6 +14,16 @@ public class UI_UpgradeItem : MonoBehaviour
 
     private Upgrade _upgrade;
 
+    public void Start()
+    {
+        UpgradeButton.onClick.AddListener(LevelUp);
+    }
+
+    public void OnDestroy()
+    {
+        UpgradeButton.onClick.RemoveListener(LevelUp);
+    }
+
     public void Refresh(Upgrade upgrade)
     {
         _upgrade = upgrade;

@@ -29,8 +29,9 @@ public class AutoClickerSpawner : MonoBehaviour
     private void Update()
     {
         _timer += Time.deltaTime;
-
-        if (_timer > _interval)
+        Debug.Log(_interval - StatManager.Instance.GetStat(EStatType.AutoHeartRate));
+        
+        if (_timer > _interval - _interval * StatManager.Instance.GetStat(EStatType.AutoHeartRate))
         {
             _timer = 0;
             Spawn();

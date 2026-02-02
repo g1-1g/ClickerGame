@@ -50,8 +50,6 @@ public class StatManager : MonoBehaviour
             additiveBonus += upgradeData.Value;
         }
 
-        var baseValue = _baseStats[(int)upgradeData.StatType];
-
         _stats[(int)upgradeData.StatType] = (_stats[(int)upgradeData.StatType] + additiveBonus) * multiplicativeBonus;
 
         SaveData();
@@ -88,6 +86,7 @@ public class StatManager : MonoBehaviour
     private StatSaveData CreateBaseStatData()
     {
         StatSaveData data = new StatSaveData();
+
         data.Stats = _baseStats;
 
         return data;

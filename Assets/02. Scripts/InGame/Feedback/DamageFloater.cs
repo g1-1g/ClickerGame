@@ -21,7 +21,7 @@ public class DamageFloater : MonoBehaviour
         _damageText = GetComponent<TextMeshProUGUI>();
         _canvasGroup = GetComponent<CanvasGroup>();
     }
-    public void Show(float damage)  
+    public void Show(double damage)  
     {
         _damageText.text = $"{damage}";
         

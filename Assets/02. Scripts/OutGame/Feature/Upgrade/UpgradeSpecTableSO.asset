@@ -13,43 +13,48 @@ MonoBehaviour:
   m_Name: UpgradeSpecTableSO
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSpecTableSO
   Datas:
-  - Type: 0
+  - StatType: 0
+    ModifierType: 0
     MaxLevel: 10
     BaseCost: 50
-    BaseHeartGet: 1
     CostMultiplier: 2
-    HeartGetMultiplier: 2
+    BaseStat: 1
+    Value: 1
     Name: "\uCE04\uB974"
     Description: "\uD558\uD2B8 \uC99D\uAC00 + 1"
-  - Type: 2
+  - StatType: 1
+    ModifierType: 0
     MaxLevel: 10
     BaseCost: 50
-    BaseHeartGet: 1
     CostMultiplier: 2
-    HeartGetMultiplier: 2
+    BaseStat: 5
+    Value: -0.25
     Name: "\uC0DD\uC950 \uC7A5\uB09C\uAC10"
     Description: "\uC790\uB3D9 \uD074\uB9AD \uC18D\uB3C4 \uC99D\uAC00"
-  - Type: 1
+  - StatType: 2
+    ModifierType: 0
     MaxLevel: 10
     BaseCost: 50
-    BaseHeartGet: 1
     CostMultiplier: 2
-    HeartGetMultiplier: 2
+    BaseStat: 0
+    Value: 5
     Name: "\uC2A4\uD06C\uB808\uCCD0"
-    Description: "\uC560\uC815\uB3C4 \uC0C1\uC2B9 \uBE44\uC728 + 1 %"
-  - Type: 3
+    Description: "\uC560\uC815\uB3C4 \uC0C1\uC2B9 \uBE44\uC728 + 5%"
+  - StatType: 3
+    ModifierType: 0
     MaxLevel: 10
     BaseCost: 50
-    BaseHeartGet: 1
     CostMultiplier: 2
-    HeartGetMultiplier: 2
+    BaseStat: 1
+    Value: 1
     Name: "\uB0E5\uC774\uC758 \uACE8\uACE8\uC1A1"
     Description: "\uACE8\uACE8 \uD0C0\uC784 \uC9C0\uC18D + 1\uCD08"
-  - Type: 4
+  - StatType: 4
+    ModifierType: 0
     MaxLevel: 10
     BaseCost: 50
-    BaseHeartGet: 1
     CostMultiplier: 2
-    HeartGetMultiplier: 2
+    BaseStat: 1
+    Value: 1
     Name: "\uCEA3\uB2E2"
     Description: "\uD2B9\uC815 \uD655\uB960\uB85C \uD074\uB9AD \uC218 x 2"

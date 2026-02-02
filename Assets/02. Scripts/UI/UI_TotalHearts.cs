@@ -9,7 +9,7 @@ public class UI_TotalHearts : MonoBehaviour
     void Start()
     {
         TotalUpdate();
-        CurrencyManager.OnCurrencyChanged += TotalUpdate;
+        CurrencyManager.OnDataChanged += TotalUpdate;
     }
 
     void TotalUpdate()
@@ -22,7 +22,7 @@ public class UI_TotalHearts : MonoBehaviour
     {
         if (CatManager.Instance != null)
         {
-            CurrencyManager.OnCurrencyChanged -= TotalUpdate;
+            CurrencyManager.OnDataChanged -= TotalUpdate;
         }  
     }
 }

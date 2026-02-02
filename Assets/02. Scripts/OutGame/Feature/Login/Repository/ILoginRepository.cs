@@ -1,7 +1,8 @@
-﻿
+
 public interface ILoginRepository 
 {
-    public void Save(CurrencySaveData saveData);
-
-    public string Load();
+    bool IsEmailAvailable(string email);
+    AuthResult Register(string email, string password);
+    AuthResult Login(string email, string password);
+    void Logout();
 }

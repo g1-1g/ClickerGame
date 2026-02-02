@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.AdaptivePerformance.Editor;
 using UnityEngine;
 
 
@@ -16,6 +15,7 @@ public class AccountManager : MonoBehaviour
 
     public string Email => _currentAccount?.Email ?? string.Empty;
 
+    private LocalAccountRepository _repository;
 
 
     private void Awake()
@@ -26,6 +26,9 @@ public class AccountManager : MonoBehaviour
             return;
         }
         _instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        _repository = new LocalAccountRepository();
     }
 
     public AuthResult TryLogin(string email, string password)
@@ -45,33 +48,26 @@ public class AccountManager : MonoBehaviour
                 Message = e.Message,
             };
         }
+        
+        AuthResult result = _repository.Login(email, password);
 
-        if (!PlayerPrefs.HasKey($"{email}Hash"))
+        if (result.Success)
         {
-            return new AuthResult()
+            _currentAccount = account;
+            return new AuthResult
             {
-                Success = false,
-                Message = "존재하지 않는 이메일입니다..",
+                Success = true,
+                Message = result.Message,
             };
         }
-
-        if (!PasswordHasher.VerifyPassword(password, PlayerPrefs.GetString($"{email}Hash"), PlayerPrefs.GetString($"{email}Salt")))
+        else
         {
-            return new AuthResult()
+            return new AuthResult
             {
                 Success = false,
-                Message = "이메일과 비밀번호가 일치하지 않습니다.",
+                Message = result.Message,
             };
         }
-
-        _currentAccount = account;
-
-        PlayerPrefs.SetString("LastEmail", email);
-        return new AuthResult()
-        {
-            Success = true,
-            Message = "",
-        };
     }
 
     public AuthResult TryRegister(string email, string password)
@@ -89,24 +85,28 @@ public class AccountManager : MonoBehaviour
             };
         }
 
-        if (PlayerPrefs.HasKey($"{email}Hash"))
+        AuthResult result = _repository.Register(email, password);
+
+
+        if (result.Success)
         {
-            return new AuthResult()
+            string salt = PasswordHasher.GenerateSalt();
+            PlayerPrefs.SetString($"{email}Salt", salt);
+            PlayerPrefs.SetString($"{email}Hash", PasswordHasher.HashPassword(password, salt));
+
+            return new AuthResult
             {
-                Success = false,
-                Message = "이미 존재하는 계정입니다.",
+                Success = true,
+                Message = result.Message
             };
         }
-
-        string salt = PasswordHasher.GenerateSalt();
-        PlayerPrefs.SetString($"{email}Salt", salt);
-        PlayerPrefs.SetString($"{email}Hash", PasswordHasher.HashPassword(password, salt));
-
-        return new AuthResult()
+        else
         {
-            Success = true,
-            Message = "",
-        };
+            return new AuthResult
+            {
+                Success = false,
+                Message = result.Message,
+            };
+        }
     }
-
 }

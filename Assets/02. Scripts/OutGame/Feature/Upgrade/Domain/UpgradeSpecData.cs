@@ -5,12 +5,13 @@ using System.Collections;
 [Serializable]
 public class UpgradeSpecData
 {
-    public EUpgradeType Type;
+    public EStatType StatType;
+    public EModifierType ModifierType;
     public int MaxLevel;
-    public double BaseCost;
-    public double BaseHeartGet;
-    public double CostMultiplier;
-    public double HeartGetMultiplier;
+    public int BaseCost;
+    public int CostMultiplier;
+    public int BaseStat;
+    public double Value;
     public string Name;
     public string Description;
 }

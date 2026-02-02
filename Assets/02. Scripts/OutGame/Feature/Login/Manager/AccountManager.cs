@@ -26,6 +26,7 @@ public class AccountManager : MonoBehaviour
             return;
         }
         _instance = this;
+        DontDestroyOnLoad(gameObject);
 
         _repository = new LocalAccountRepository();
     }

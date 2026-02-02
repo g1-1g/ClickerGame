@@ -18,7 +18,7 @@ public class CurrencyManager : MonoBehaviour
 
     public static event Action OnCurrencyChanged;
 
-    private CurrencyRepository _repository;
+    private ICurrencyRepository _repository;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class CurrencyManager : MonoBehaviour
         }
         _instance = this;
 
-        _repository = new CurrencyRepository();
+        _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
     }
 
     private void Start()

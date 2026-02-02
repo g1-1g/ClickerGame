@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class UI_UpgradeItem : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class UI_UpgradeItem : MonoBehaviour
     public Image UpgradeButtonImage;
     public Button UpgradeButton;
 
-    private Upgrade _upgrade;
+    private Item _item;
 
     public void Start()
     {
@@ -24,16 +25,16 @@ public class UI_UpgradeItem : MonoBehaviour
         UpgradeButton.onClick.RemoveListener(LevelUp);
     }
 
-    public void Refresh(Upgrade upgrade)
+    public void Refresh(Item item)
     {
-        _upgrade = upgrade;
+        _item = item;
 
-        NameTextUI.text = upgrade.SpecData.Name;
-        DescriptionTextUI.text = string.Format(upgrade.SpecData.Description);
-        LevelTextUI.text = $"LV. {upgrade.Level}";
-        CostTextUI.text = upgrade.Cost.ToString();
+        NameTextUI.text = item.SpecData.Name;
+        DescriptionTextUI.text = string.Format(item.SpecData.Description);
+        LevelTextUI.text = $"LV. {item.Level}";
+        CostTextUI.text = item.Cost.ToString();
 
-        bool canLevelUp = UpgradeManager.Instance.CanLevelUp(upgrade.SpecData.StatType);
+        bool canLevelUp = ItemManager.Instance.CanLevelUp(item.SpecData.StatType);
 
         CostTextUI.color = canLevelUp ? Color.white : Color.gray4;
         UpgradeButtonImage.color = canLevelUp ? Color.white : Color.gray4;
@@ -44,9 +45,9 @@ public class UI_UpgradeItem : MonoBehaviour
 
     public void LevelUp()
     {
-        if (_upgrade == null) return;
+        if (_item == null) return;
 
-        if (UpgradeManager.Instance.TryLevelUp(_upgrade.SpecData.StatType))
+        if (ItemManager.Instance.TryLevelUp(_item.SpecData.StatType))
         {
             // todo: 이펙트, 애니메이션, 트위닝
         }

@@ -11,13 +11,13 @@ public class UI_UpgradePanel : MonoBehaviour
         RefreshAll();
 
         CurrencyManager.OnDataChanged += RefreshAll;
-        UpgradeManager.OnDataChanged += Refresh;
+        ItemManager.OnDataChanged += Refresh;
     }
 
 
     private void RefreshAll()
     {
-        var upgrades = UpgradeManager.Instance.GetAll();
+        var upgrades = ItemManager.Instance.GetAll();
 
         for (int i = 0; i < Items.Count; ++i)
         {
@@ -25,9 +25,9 @@ public class UI_UpgradePanel : MonoBehaviour
         }
     }
 
-    private void Refresh(EStatType type)
+    private void Refresh(EItemType type)
     {
-        var upgrade = UpgradeManager.Instance.Get(type);
+        var upgrade = ItemManager.Instance.Get(type);
 
         Items[(int)type].Refresh(upgrade);
     }
@@ -35,6 +35,6 @@ public class UI_UpgradePanel : MonoBehaviour
     private void OnDestroy()
     {
         CurrencyManager.OnDataChanged -= RefreshAll;
-        UpgradeManager.OnDataChanged -= Refresh;
+        ItemManager.OnDataChanged -= Refresh;
     }
 }

@@ -1,6 +1,7 @@
 using System.Threading;
 using Lean.Pool;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class AutoClickerSpawner : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class AutoClickerSpawner : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        if (_timer > _interval - _interval * StatManager.Instance.GetStat(EStatType.AutoHeartRate))
+        if (_timer > _interval - StatManager.Instance.GetStat(EItemType.AutoHeartRate))
         {
             _timer = 0;
             Spawn();

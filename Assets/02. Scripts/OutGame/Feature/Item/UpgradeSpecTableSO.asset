@@ -27,7 +27,7 @@ MonoBehaviour:
     MaxLevel: 10
     BaseCost: 50
     CostMultiplier: 2
-    BaseStat: 5
+    BaseStat: 0
     Value: 0.25
     Name: "\uC0DD\uC950 \uC7A5\uB09C\uAC10"
     Description: "\uC790\uB3D9 \uD074\uB9AD \uC18D\uB3C4 \uC99D\uAC00"

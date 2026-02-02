@@ -539,12 +539,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098033c0e01425f4880e534679760679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatManager
-  _baseStats:
-  - 1
-  - 1
+  _stats:
   - 0
-  - 1
-  - 1
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!1 &166267634
 GameObject:
   m_ObjectHideFlags: 0

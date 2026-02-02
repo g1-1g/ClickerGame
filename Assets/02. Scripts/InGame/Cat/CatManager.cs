@@ -43,6 +43,10 @@ public class CatManager : MonoBehaviour
 
     private void OnLevelChanged(CatLevelDataSO sO)
     {
+        if (_currentCat.Level == 1)
+        {
+            return;
+        }
         _player.Play(_currentCat.transform.position);
     }
 

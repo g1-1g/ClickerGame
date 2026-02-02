@@ -10,7 +10,7 @@ public class UI_UpgradePanel : MonoBehaviour
     {
         RefreshAll();
 
-        CurrencyManager.OnDataChanged += Refresh;
+        CurrencyManager.OnDataChanged += RefreshAll;
         UpgradeManager.OnDataChanged += Refresh;
     }
 
@@ -34,7 +34,7 @@ public class UI_UpgradePanel : MonoBehaviour
 
     private void OnDestroy()
     {
-        CurrencyManager.OnDataChanged -= Refresh;
+        CurrencyManager.OnDataChanged -= RefreshAll;
         UpgradeManager.OnDataChanged -= Refresh;
     }
 }

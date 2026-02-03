@@ -1,11 +1,13 @@
 using UnityEngine;
 using Firebase.Extensions;
 using Firebase.Auth;
+using Firebase.Firestore;
 
 public class FirebaseTutorial : MonoBehaviour
 {
     private Firebase.FirebaseApp _app = null;
     private FirebaseAuth _auth = null;
+    private FirebaseFirestore _db = null;
 
     void Start()
     {
@@ -16,6 +18,7 @@ public class FirebaseTutorial : MonoBehaviour
                 // 1. Firebase 초기화 성공했다면 
                 _app = Firebase.FirebaseApp.DefaultInstance; // FirebaseApp 모듈 가져오기
                 _auth = Firebase.Auth.FirebaseAuth.DefaultInstance; // FirebaseAuth 모듈 가져오기
+                _db = FirebaseFirestore.DefaultInstance; // Firestore 모듈 가져오기
 
                 Debug.Log("Firebase 초기화 성공");
             }
@@ -30,7 +33,7 @@ public class FirebaseTutorial : MonoBehaviour
 
     public void Register(string email, string password)
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
                 Debug.LogError("회원가입이 실패했습니다: " + task.Exception);
@@ -44,7 +47,7 @@ public class FirebaseTutorial : MonoBehaviour
 
     public void Login(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
                 Debug.LogError("로그인 실패" + task.Exception);
@@ -80,12 +83,47 @@ public class FirebaseTutorial : MonoBehaviour
         }      
     }
 
+    private void SaveDogs()
+    {
+        Dog dog = new Dog("뽀삐", 3);
+
+        _db.Collection("Dogs").Document("개").SetAsync(dog).ContinueWithOnMainThread(task => {
+            if (task.IsCanceled || task.IsFaulted)
+            {
+                Debug.LogError("저장 실패: " + task.Exception);
+                return;
+            }
+            Debug.Log("저장 성공: " );
+        });
+    }
+
+    private void LoadDogs()
+    {
+        _db.Collection("Dogs").Document("개").GetSnapshotAsync().ContinueWithOnMainThread(task => {
+            if (task.IsCanceled || task.IsFaulted)
+            {
+                Debug.LogError("불러오기 실패: " + task.Exception);
+                return;
+            }
+            DocumentSnapshot snapshot = task.Result;
+            if (snapshot.Exists)
+            {
+                Dog dog = snapshot.ConvertTo<Dog>();
+                Debug.LogFormat("불러오기 성공: {0}, {1}", dog.Name, dog.Age);
+            }
+            else
+            {
+                Debug.Log("불러오기 실패: 문서가 존재하지 않습니다.");
+            }
+        });
+    }
+
     private void Update()
     {
         if (_app == null)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Register("djdjdjd@dndja.com", "dksjlfa");
         }
@@ -93,7 +131,7 @@ public class FirebaseTutorial : MonoBehaviour
         {
             Login("djdjdjd@dndja.com", "dksjlfa");
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Logout();
         }
@@ -102,6 +140,17 @@ public class FirebaseTutorial : MonoBehaviour
         {
             checkLoginStatus();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SaveDogs();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            LoadDogs();
+        }
     }
 
 }
+

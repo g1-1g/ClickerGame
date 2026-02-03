@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 537f351ea939e7a4f80f4643a5e60eaf, type: 3}
-  m_Name: UpgradeSpecTableSO
+  m_Name: ItemSpecTableSO
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSpecTableSO
   Datas:
   - StatType: 0

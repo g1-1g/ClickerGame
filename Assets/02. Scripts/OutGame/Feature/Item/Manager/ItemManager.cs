@@ -9,7 +9,7 @@ public class ItemManager : MonoBehaviour
 
     public static event Action<EItemType> OnDataChanged;
 
-    [SerializeField] private UpgradeSpecTableSO _specTable;
+    [SerializeField] private ItemSpecTableSO _specTable;
 
     private Dictionary<EItemType, Item> _items = new();
 

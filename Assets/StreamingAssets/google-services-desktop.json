@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492101951522",
+    "project_id": "clicker-cc290",
+    "storage_bucket": "clicker-cc290.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492101951522:android:6400f3a2fd5ab3bebe2a7b",
+        "android_client_info": {
+          "package_name": "com.G1.ClickerGame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH1dkTr0gYsanuvW3GRcKt_lGElNBvElw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

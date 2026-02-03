@@ -39,7 +39,7 @@ MonoBehaviour:
     - line: '|   targetDevice: 2'
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
-    - line: '|   companyName: Jiwon'
+    - line: '|   companyName: G1'
     - line: '|   productName: ''HouseCatMaker '''
     - line: '|   defaultCursor: {fileID: 2800000, guid: e1b24c15824d2c34b9175e545604aa0e,
         type: 3}'

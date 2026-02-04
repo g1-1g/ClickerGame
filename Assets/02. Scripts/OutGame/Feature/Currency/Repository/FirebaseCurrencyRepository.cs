@@ -7,6 +7,8 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
     string _userID;
     FirebaseFirestore _db;
 
+    private string COLLECTION_NAME = "Currency";
+
     public FirebaseCurrencyRepository(string userID)
     {
         _userID = userID;
@@ -17,7 +19,7 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
     {
         try
         {
-            await _db.Collection($"{_userID}").Document("Currency").SetAsync(saveData);
+            await _db.Collection(COLLECTION_NAME).Document(_userID).SetAsync(saveData);
             Debug.Log("저장 성공: ");
         }
         catch (System.Exception e)
@@ -30,7 +32,7 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
     {
         try
         {
-            var result = await _db.Collection($"{_userID}").Document("Currency").GetSnapshotAsync();
+            var result = await _db.Collection(COLLECTION_NAME).Document(_userID).GetSnapshotAsync();
 
             CurrencySaveData data = result.ConvertTo<CurrencySaveData>();
             Debug.LogFormat("불러오기 성공");

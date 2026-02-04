@@ -8,6 +8,8 @@ public class FirebaseItemLevelRepository : IItemLevelRepository
 {
     private string _userId;
     FirebaseFirestore _db;
+    private string COLLECTION_NAME = "Item";
+
 
     public FirebaseItemLevelRepository(string userId)
     {
@@ -19,7 +21,7 @@ public class FirebaseItemLevelRepository : IItemLevelRepository
     {
         try
         {
-            var result = await _db.Collection($"{_userId}").Document("Item").GetSnapshotAsync();
+            var result = await _db.Collection(COLLECTION_NAME).Document(_userId).GetSnapshotAsync();
 
             ItemLevelSaveData data = result.ConvertTo<ItemLevelSaveData>();
             Debug.LogFormat("불러오기 성공");
@@ -45,7 +47,7 @@ public class FirebaseItemLevelRepository : IItemLevelRepository
     {
         try
         {
-            await _db.Collection($"{_userId}").Document("Item").SetAsync(data);
+            await _db.Collection(COLLECTION_NAME).Document(_userId).SetAsync(data);
             Debug.Log("저장 성공: ");
         }
         catch (System.Exception e)

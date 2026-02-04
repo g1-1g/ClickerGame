@@ -1,9 +1,10 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public interface IItemLevelRepository
 {
-    public void Save(ItemLevelSaveData data);
+    public UniTask Save(ItemLevelSaveData data);
 
-    public ItemLevelSaveData Load();
+    public UniTask<ItemLevelSaveData> Load();
     
 }

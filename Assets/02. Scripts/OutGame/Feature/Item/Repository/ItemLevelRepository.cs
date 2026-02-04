@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ItemLevelRepository : IItemLevelRepository
@@ -8,16 +9,17 @@ public class ItemLevelRepository : IItemLevelRepository
         _userId = userId;
     }
 
-    public void Save(ItemLevelSaveData data)
+    public UniTask Save(ItemLevelSaveData data)
     {
         for (int i = 0; i < data.Levels.Length; i++)
         {
             var type = (EItemType)i;
             PlayerPrefs.SetString($"{_userId}_{type.ToString()}", data.Levels[(int)type].ToString());
         }
+        return UniTask.CompletedTask;
     }
 
-    public ItemLevelSaveData Load()
+    public UniTask<ItemLevelSaveData> Load()
     {
         ItemLevelSaveData data = ItemLevelSaveData.Default;
         for (int i = 0; i < data.Levels.Length; i++)
@@ -29,10 +31,11 @@ public class ItemLevelRepository : IItemLevelRepository
             }
             else
             {
-                return null;
+                data = null;
+                UniTask.FromResult(data);
             }
         }
-        return data;
+        return UniTask.FromResult(data);
     }
 }
 

@@ -2,20 +2,21 @@ using Cysharp.Threading.Tasks;
 using Firebase.Firestore;
 using UnityEngine;
 
-public class FirebaseCurrencyRepository : ICurrencyRepository
+public class FirebaseCatsRepository : ICatsRepository
 {
     string _userID;
     FirebaseFirestore _db;
 
-    private string COLLECTION_NAME = "Currency";
+    private string COLLECTION_NAME = "Cats";
 
-    public FirebaseCurrencyRepository(string userID)
+    
+    public FirebaseCatsRepository(string userID)
     {
         _userID = userID;
         _db = FirebaseInitializer.Instance.Database;
     }
 
-    public async UniTask Save(CurrencySaveData saveData)
+    public async UniTask Save(OwnedCatsSaveData saveData)
     {
         try
         {
@@ -28,27 +29,28 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
         }
     }
 
-    public async UniTask<CurrencySaveData> Load()
+    public async UniTask<OwnedCatsSaveData> Load()
     {
         try
         {
             var result = await _db.Collection(COLLECTION_NAME).Document(_userID).GetSnapshotAsync();
 
-            CurrencySaveData data = result.ConvertTo<CurrencySaveData>();
-            Debug.LogFormat("불러오기 성공");
+            OwnedCatsSaveData data = result.ConvertTo<OwnedCatsSaveData>();
+            
             if (data == null)
             {
-                Debug.LogWarning("불러온 데이터가 null 입니다. 새로 생성합니다.");
-                return CurrencySaveData.Default;
+                Debug.LogWarning("불러온 데이터가 없습니다.");
+                return null;
             }
+            else
             {
                 return data;
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError("불러오기 실패, 새로 생성합니다.:"  + e );
-            return CurrencySaveData.Default;
+            Debug.LogError("불러오기 실패:" + e);
+            return null;
         }
     }
 }

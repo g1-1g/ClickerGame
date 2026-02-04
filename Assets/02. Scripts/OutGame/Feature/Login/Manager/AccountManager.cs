@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
@@ -15,10 +17,13 @@ public class AccountManager : MonoBehaviour
 
     public string Email => _currentAccount?.Email ?? string.Empty;
 
-    private LocalAccountRepository _repository;
+    private IAccountRepository _repository;
 
+    private bool _isReady = false;
 
-    private void Awake()
+    public bool IsReady => _isReady;
+
+    private async void Awake()
     {
         if (_instance != null || _instance == gameObject)
         {
@@ -28,11 +33,29 @@ public class AccountManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        _repository = new LocalAccountRepository();
+        await WaitForFirebaseAsync();
+        _repository = new FirebaseAccountRepository();
+
+        _isReady = true;
     }
 
-    public AuthResult TryLogin(string email, string password)
+    private async UniTask WaitForFirebaseAsync()
     {
+        // FirebaseManager가 준비될 때까지 대기
+        while (FirebaseInitializer.Instance == null ||
+               !FirebaseInitializer.Instance.IsInitialized)
+        {
+            await UniTask.Yield();
+        }
+    }
+
+    public async Task<AccountResult> TryLogin(string email, string password)
+    {
+        if (!_isReady) return new AccountResult()
+        {
+            Success = false,
+            Message = "Service not ready"
+        }; ;
 
         Account account; 
 
@@ -42,19 +65,19 @@ public class AccountManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            return new AuthResult()
+            return new AccountResult()
             {
                 Success = false,
                 Message = e.Message,
             };
         }
         
-        AuthResult result = _repository.Login(email, password);
+        AccountResult result = await _repository.Login(email, password);
 
         if (result.Success)
         {
             _currentAccount = account;
-            return new AuthResult
+            return new AccountResult
             {
                 Success = true,
                 Message = result.Message,
@@ -62,7 +85,7 @@ public class AccountManager : MonoBehaviour
         }
         else
         {
-            return new AuthResult
+            return new AccountResult
             {
                 Success = false,
                 Message = result.Message,
@@ -70,43 +93,33 @@ public class AccountManager : MonoBehaviour
         }
     }
 
-    public AuthResult TryRegister(string email, string password)
+    public async UniTask<AccountResult> TryRegister(string email, string password)
     {
+        if (!_isReady) return new AccountResult()
+        {
+            Success = false,
+            Message = "Service not ready"
+        }; ;
         try
         {
             Account account = new Account(email, password);
         }
         catch (Exception e)
         {
-            return new AuthResult()
+            return new AccountResult()
             {
                 Success = false,
                 Message = e.Message,
             };
         }
 
-        AuthResult result = _repository.Register(email, password);
+        AccountResult result = await _repository.Register(email, password);
 
+        return result;
+    }
 
-        if (result.Success)
-        {
-            string salt = PasswordHasher.GenerateSalt();
-            PlayerPrefs.SetString($"{email}Salt", salt);
-            PlayerPrefs.SetString($"{email}Hash", PasswordHasher.HashPassword(password, salt));
-
-            return new AuthResult
-            {
-                Success = true,
-                Message = result.Message
-            };
-        }
-        else
-        {
-            return new AuthResult
-            {
-                Success = false,
-                Message = result.Message,
-            };
-        }
+    public void Logout()
+    {
+        _repository.Logout();
     }
 }

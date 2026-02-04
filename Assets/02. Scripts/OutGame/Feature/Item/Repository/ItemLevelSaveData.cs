@@ -1,8 +1,11 @@
 using System.Linq;
+using Firebase.Firestore;
 
+[FirestoreData]
 public class ItemLevelSaveData
 {
-    public int[] Levels;
+    [FirestoreProperty]
+    public int[] Levels { get; set; }
 
     public static ItemLevelSaveData Default => new ItemLevelSaveData()
     {

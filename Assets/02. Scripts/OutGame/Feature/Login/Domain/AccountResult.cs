@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public  struct AuthResult
+public  struct AccountResult
 {
     public bool Success;
     public string Message;

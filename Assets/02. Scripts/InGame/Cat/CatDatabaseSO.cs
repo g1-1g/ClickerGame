@@ -2,9 +2,12 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "CatLevelDatabaseSO", menuName = "ScriptableObjects/CatLevelDatabaseSO", order = 0)]
-public class CatLevelDatabaseSO : ScriptableObject
+public class CatDatabaseSO : ScriptableObject
 {
-    [Header("·¹º§ µ¥ÀÌÅÍ ¸ñ·Ï")]
+    [SerializeField]
+    public Sprite Image;
+
+    [Header("ë ˆë²¨ ë°ì´í„° ëª©ë¡")]
     [SerializeField]
     private CatLevelDataSO[] _levels;
 
@@ -12,13 +15,13 @@ public class CatLevelDatabaseSO : ScriptableObject
 
     public CatLevelDataSO GetLevelData(int level)
     {
-        int index = level - 1; // ¹è¿­Àº 0ºÎÅÍ ½ÃÀÛ
+        int index = level - 1; // ë°°ì—´ì€ 0ë¶€í„° ì‹œì‘
         if (index >= 0 && index < _levels.Length)
         {
             return _levels[index];
         }
 
-        Debug.LogWarning($"·¹º§ {level}¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.");
+        Debug.LogWarning($"ë ˆë²¨ {level}ì— í•´ë‹¹í•˜ëŠ” ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
         return null;
     }
 

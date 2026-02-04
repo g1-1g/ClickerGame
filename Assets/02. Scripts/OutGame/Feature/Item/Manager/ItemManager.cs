@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 public class ItemManager : MonoBehaviour
 {
     private static ItemManager _instance;
@@ -17,7 +19,7 @@ public class ItemManager : MonoBehaviour
 
     private IItemLevelRepository _repository;
 
-    private void Awake()
+    private async void Awake()
     {
         if (_instance != null || _instance == gameObject)
         {
@@ -39,15 +41,28 @@ public class ItemManager : MonoBehaviour
             OnDataChanged?.Invoke(specData.StatType);
         }
 
-        _repository = new ItemLevelRepository(AccountManager.Instance.Email);
+        // Firebase 초기화 대기
+        await WaitForFirebaseAsync();
+
+        // Repository 생성
+        _repository = new FirebaseItemLevelRepository(AccountManager.Instance.Email);
+
+        // 데이터 로드
+        await LoadData();
     }
 
     public Item Get(EItemType type) => _items[type] ?? null;
     public List<Item> GetAll() => _items.Values.ToList();
 
-    private void Start()
+    
+    private async UniTask WaitForFirebaseAsync()
     {
-        LoadData();
+        // FirebaseManager가 준비될 때까지 대기
+        while (FirebaseInitializer.Instance == null ||
+               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
+        {
+            await UniTask.Yield();
+        }
     }
 
     public bool CanLevelUp(EItemType type)
@@ -90,14 +105,14 @@ public class ItemManager : MonoBehaviour
         return true;
     }
 
-    private void LoadData()
+    private async UniTask LoadData()
     {
-        var loadedData = _repository.Load();
+        var loadedData = await _repository.Load();
 
         if (loadedData == null)
         {
             // 데이터 없으면 기본값으로 초기화
-            Debug.Log("저장된 데이터 없음 - 기본값 생성");
+            Debug.Log("기본값 생성");
             _levels = ItemLevelSaveData.Default.Levels;
 
             // 즉시 저장 (다음부터는 로드됨)

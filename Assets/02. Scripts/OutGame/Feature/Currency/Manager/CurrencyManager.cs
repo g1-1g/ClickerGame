@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
@@ -18,6 +19,7 @@ public class CurrencyManager : MonoBehaviour
 
     private ICurrencyRepository _repository;
 
+    private bool _isReady = false;
     private void Awake()
     {
         if (_instance != null || _instance == gameObject)
@@ -28,19 +30,40 @@ public class CurrencyManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Start()
+    private async void Start()
     {
-        _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
-        LoadData();
+        // Firebase 초기화 대기
+        await WaitForFirebaseAsync();
+
+        // Repository 생성
+        _repository = new FirebaseCurrencyRepository(AccountManager.Instance.Email);
+
+        // 데이터 로드
+        await LoadData();
+
+        _isReady = true;
     }
 
-    private void LoadData()
+    private async UniTask WaitForFirebaseAsync()
     {
-        _currencies = _repository.Load().Currencies;
+        // FirebaseManager가 준비될 때까지 대기
+        while (FirebaseInitializer.Instance == null ||
+               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
+        {
+            await UniTask.Yield();
+        }
+    }
+
+    private async UniTask LoadData()
+    {
+        CurrencySaveData data = await _repository.Load();
+        _currencies = data.Currencies;
+        OnDataChanged?.Invoke();
     }
 
     private void SaveData()
     {
+        if (!_isReady) return;
         CurrencySaveData data = new CurrencySaveData();
         data.Currencies = _currencies;
 
@@ -52,7 +75,7 @@ public class CurrencyManager : MonoBehaviour
     {
         _currencies[(int)type] += amount;
 
-        CatManager.Instance.CurrentCat.AffectionUp(amount);
+        CatManager.Instance.AffectionUp(amount);
         OnDataChanged?.Invoke();
         SaveData();
     }

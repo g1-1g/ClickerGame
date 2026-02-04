@@ -143,22 +143,23 @@ public class LoginSceneManager : MonoBehaviour
     }
 
 
-    public void Login()
+    public async void Login()
     {
         string id = _idInputField.text;
 
         string password = _passwordInputField.text;
 
-        if (!AccountManager.Instance.TryLogin(id, password).Success)
+        var result = await AccountManager.Instance.TryLogin(id, password);
+        if (!result.Success)
         {
-            _messageText.text = AccountManager.Instance.TryLogin(id, password).Message;
+            _messageText.text = result.Message;
             return;
         }
 
         SceneManager.LoadScene("Game");
     }
 
-    private void Register()
+    private async void Register()
     {
         string id = _idInputField.text;
 
@@ -171,9 +172,10 @@ public class LoginSceneManager : MonoBehaviour
             return;
         }
 
-        if (!AccountManager.Instance.TryRegister(id, password).Success)
+        var result = await AccountManager.Instance.TryRegister(id, password);
+        if (!result.Success)
         {
-            _messageText.text = AccountManager.Instance.TryRegister(id, password).Message;
+            _messageText.text = result.Message;
             return;
         }
 

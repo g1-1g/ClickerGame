@@ -5,17 +5,19 @@ using UnityEngine;
 public class FirebaseCurrencyRepository : ICurrencyRepository
 {
     string _userID;
+    FirebaseFirestore _db;
 
     public FirebaseCurrencyRepository(string userID)
     {
         _userID = userID;
+        _db = FirebaseInitializer.Instance.Database;
     }
 
     public async UniTask Save(CurrencySaveData saveData)
     {
         try
         {
-            await FirebaseInitializer.Instance.Database.Collection($"{_userID}").Document("Currency").SetAsync(saveData);
+            await _db.Collection($"{_userID}").Document("Currency").SetAsync(saveData);
             Debug.Log("저장 성공: ");
         }
         catch (System.Exception e)
@@ -28,7 +30,7 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
     {
         try
         {
-            var result = await FirebaseInitializer.Instance.Database.Collection($"{_userID}").Document("Currency").GetSnapshotAsync();
+            var result = await _db.Collection($"{_userID}").Document("Currency").GetSnapshotAsync();
 
             CurrencySaveData data = result.ConvertTo<CurrencySaveData>();
             Debug.LogFormat("불러오기 성공");

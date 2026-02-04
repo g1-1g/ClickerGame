@@ -36,8 +36,7 @@ public class CurrencyManager : MonoBehaviour
         await WaitForFirebaseAsync();
 
         // Repository 생성
-        //_repository = new FirebaseCurrencyRepository(AccountManager.Instance.Email);
-        _repository = new FirebaseCurrencyRepository("AccountManager.Instance.Email");
+        _repository = new FirebaseCurrencyRepository(AccountManager.Instance.Email);
 
         // 데이터 로드
         await LoadData();
@@ -49,7 +48,7 @@ public class CurrencyManager : MonoBehaviour
     {
         // FirebaseManager가 준비될 때까지 대기
         while (FirebaseInitializer.Instance == null ||
-               !FirebaseInitializer.Instance.IsInitialized)
+               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
         {
             await UniTask.Yield();
         }

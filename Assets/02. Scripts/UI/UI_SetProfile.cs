@@ -14,28 +14,21 @@ public class UI_SetProfile : MonoBehaviour
 
     [SerializeField] private float _doTweenDuration;
 
+    private CatManager _catManager;
+
     void Start()
     {
-        Cat cat = CatManager.Instance.CurrentCat;
+        _catManager = CatManager.Instance;
         
         Init();
     }
 
     private void Init()
     {
-        Cat cat = CatManager.Instance.CurrentCat;
-
-        cat.OnAffectionChanged -= AffectionUpdate;
-        cat.OnLevelChanged -= LevelUpdate;
-        cat.OnAffectionChanged += AffectionUpdate;
-        cat.OnLevelChanged += LevelUpdate;
-        
-        cat.OnNameChanged -= CatNameUpdate;
-        cat.OnNameChanged += CatNameUpdate;
-
-        _affectionSlider.value = 0;
-        _image.sprite = cat.Image;
-        _nameText.text = cat.Name;
+        _catManager.OnCatChanged += CatUpdate;
+        _catManager.OnAffectionChanged += AffectionUpdate;
+        _catManager.OnLevelChanged += LevelUpdate;
+        _catManager.OnNameChanged += CatNameUpdate;
     }
 
     public void LevelUpdate(CatLevelDataSO data)
@@ -51,12 +44,14 @@ public class UI_SetProfile : MonoBehaviour
         _affectionSlider.DOValue(ratio, _doTweenDuration);
     }
 
-    public void CatUpdate(Cat cat)
+    public void CatUpdate()
     {
-        _image.sprite = cat.Image;
-        _nameText.text = cat.Name;
-        LevelUpdate(cat.CurrentLevelData);
-        AffectionUpdate(cat.AffectionRatio);
+        _affectionSlider.value = 0;
+        _image.sprite = _catManager.Image;
+        _nameText.text = _catManager.CurrentCat.Name;
+
+        LevelUpdate(_catManager.CurrentLevelData);
+        AffectionUpdate(CatManager.Instance.AffectionRatio);
     }
 
     public void CatNameUpdate(string name)
@@ -66,9 +61,9 @@ public class UI_SetProfile : MonoBehaviour
 
     public void OnDestroy()
     {
-        Cat cat = CatManager.Instance.CurrentCat;
-
-        cat.OnAffectionChanged -= AffectionUpdate;
-        cat.OnLevelChanged -= LevelUpdate;
+        _catManager.OnAffectionChanged -= AffectionUpdate;
+        _catManager.OnLevelChanged -= LevelUpdate;
+        _catManager.OnNameChanged -= CatNameUpdate;
+        _catManager.OnCatChanged -= CatUpdate;
     }
 }

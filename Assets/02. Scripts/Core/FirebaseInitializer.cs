@@ -37,7 +37,7 @@ public class FirebaseInitializer : MonoBehaviour
         {
             // 1. Firebase 초기화 성공했다면 
             _app = Firebase.FirebaseApp.DefaultInstance; // FirebaseApp 모듈 가져오기
-            Auth = Firebase.Auth.FirebaseAuth.DefaultInstance; // FirebaseAuth 모듈 가져오기
+            Auth = FirebaseAuth.DefaultInstance; // FirebaseAuth 모듈 가져오기
             Database = FirebaseFirestore.DefaultInstance; // Firestore 모듈 가져오기
 
             Debug.Log("Firebase 초기화 성공");

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class LocalCurrencyRepository : ICurrencyRepository
@@ -9,7 +10,7 @@ public class LocalCurrencyRepository : ICurrencyRepository
         _userID = userID;
     }
 
-    public void Save(CurrencySaveData data)
+    public async UniTask Save(CurrencySaveData data)
     {
         for (int i = 0; i < data.Currencies.Length; i++)
         {
@@ -18,7 +19,7 @@ public class LocalCurrencyRepository : ICurrencyRepository
         }
     }
 
-    public CurrencySaveData Load()
+    public async UniTask<CurrencySaveData> Load()
     {
         CurrencySaveData data = CurrencySaveData.Default;
         for (int i = 0; i < data.Currencies.Length; i++)

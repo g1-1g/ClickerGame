@@ -21,9 +21,9 @@ public class ItemManager : MonoBehaviour
 
     private async void Awake()
     {
-        if (_instance != null || _instance == gameObject)
+        if (_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;
@@ -112,7 +112,7 @@ public class ItemManager : MonoBehaviour
         if (loadedData == null)
         {
             // 데이터 없으면 기본값으로 초기화
-            Debug.Log("기본값 생성");
+            Debug.Log("[Item] 기본값 생성");
             _levels = ItemLevelSaveData.Default.Levels;
 
             // 즉시 저장 (다음부터는 로드됨)
@@ -128,7 +128,7 @@ public class ItemManager : MonoBehaviour
             _items[(EItemType)i].SetLevel(_levels[i]);
             OnDataChanged?.Invoke((EItemType)i);
         }
-        Debug.Log("데이터 로드 완료"); 
+        Debug.Log("[Item] 데이터 로드 완료"); 
     }
 
     private void SaveData()

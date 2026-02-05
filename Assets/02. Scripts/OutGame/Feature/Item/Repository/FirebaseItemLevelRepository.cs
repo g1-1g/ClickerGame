@@ -24,19 +24,20 @@ public class FirebaseItemLevelRepository : IItemLevelRepository
             var result = await _db.Collection(COLLECTION_NAME).Document(_userId).GetSnapshotAsync();
 
             ItemLevelSaveData data = result.ConvertTo<ItemLevelSaveData>();
-            Debug.LogFormat("불러오기 성공");
+      
             if (data == null)
             {
-                Debug.LogWarning("불러올 데이터가 없습니다");
+                Debug.LogWarning("[Item] 불러올 데이터가 없습니다");
                 return null;
             }
             {
+                Debug.LogFormat("[Item] 불러오기 성공");
                 return data;
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError("불러오기 실패" + e);
+            Debug.LogError("[Item] 불러오기 실패" + e);
             return null;
         }
         

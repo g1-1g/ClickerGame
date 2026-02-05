@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "492101951522",
+    "firebase_url": "https://clicker-cc290-default-rtdb.firebaseio.com",
     "project_id": "clicker-cc290",
     "storage_bucket": "clicker-cc290.firebasestorage.app"
   },

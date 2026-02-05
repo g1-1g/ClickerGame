@@ -15,9 +15,9 @@ public class DamagerFloaterSpawner : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null || _instance == gameObject)
+        if (_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;

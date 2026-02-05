@@ -25,9 +25,9 @@ public class AccountManager : MonoBehaviour
 
     private async void Awake()
     {
-        if (_instance != null || _instance == gameObject)
+        if (_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;
@@ -77,11 +77,13 @@ public class AccountManager : MonoBehaviour
         if (result.Success)
         {
             _currentAccount = account;
+            PlayerPrefs.SetString("LastEmail", _currentAccount.Email.ToString());
+
             return new AccountResult
             {
                 Success = true,
                 Message = result.Message,
-            };
+            };     
         }
         else
         {

@@ -77,6 +77,8 @@ public class CatManager : MonoBehaviour
 
         // 데이터 로드
         await LoadData();
+
+        CurrencyManager.OnCurrencyAdded += AffectionUp;
     }
 
     public async UniTask LoadData()
@@ -207,5 +209,10 @@ public class CatManager : MonoBehaviour
     public void IncreaseHeartPerClick(float value)
     {
         _heartsPerClick += value;
+    }
+
+    public void OnDestroy()
+    {
+        CurrencyManager.OnCurrencyAdded -= AffectionUp;
     }
 }

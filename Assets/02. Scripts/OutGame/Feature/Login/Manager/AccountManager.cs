@@ -77,6 +77,8 @@ public class AccountManager : MonoBehaviour
         if (result.Success)
         {
             _currentAccount = account;
+            PlayerPrefs.SetString("LastEmail", _currentAccount.Email);
+
             return new AccountResult
             {
                 Success = true,

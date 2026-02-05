@@ -39,8 +39,6 @@ public class FirebaseItemLevelRepository : IItemLevelRepository
             Debug.LogError("불러오기 실패" + e);
             return null;
         }
-        
-        throw new System.NotImplementedException();
     }
 
     public async UniTask Save(ItemLevelSaveData data)

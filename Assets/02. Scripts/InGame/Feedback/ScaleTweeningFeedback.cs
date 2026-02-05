@@ -3,19 +3,24 @@ using UnityEngine;
 
 public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
 {
-    private ClickTarget _owner;
+    private Vector3 _originScale;
+    private Vector3 _targetScale;
 
-    private void Awake()
+    [SerializeField]
+    private float _scaleFactor = 0.98f;
+    [SerializeField]
+    private float _duration = 0.1f;
+    public void Start()
     {
-        _owner = GetComponent<ClickTarget>();
+        _originScale = transform.localScale;
+        _targetScale = new Vector3(_originScale.x * _scaleFactor, _originScale.y* _scaleFactor, _originScale.z);
     }
-
     public void Play(ClickInfo clickInfo)
     {
-        _owner.transform.DOKill();
-        _owner.transform.DOScale(1.1f, 0.3f).OnComplete(() =>
+        transform.DOKill();
+        transform.DOScale(_targetScale, _duration).OnComplete(() =>
         {
-            _owner.transform.localScale = Vector3.one;
+            transform.localScale = _originScale;
         });
     }
 }

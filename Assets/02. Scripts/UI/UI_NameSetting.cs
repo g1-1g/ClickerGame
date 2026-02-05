@@ -12,25 +12,32 @@ public class UI_NameSetting : MonoBehaviour
 
     private UI_Popup _popup;
 
+    private ECatType _targetCat;
+
     private void Start()
     {
         _button.onClick.AddListener(SetName);
         _popup = GetComponent<UI_Popup>();
 
-        if (!CatManager.Instance.DefaultName)
-        {
-            _popup.Up();
-        } 
+        CatManager.OnCatAdded += Show;
+ 
+    }
+
+    private void Show(ECatType type)
+    {
+        _popup.Up();
+        _targetCat = type;
     }
 
     private void SetName()
     {
-        CatManager.Instance.SetCatName(_inputField.text);
+        CatManager.Instance.SetCatName(_targetCat, _inputField.text);
         _popup.Down();
     }
 
     private void OnDestroy()
     {
+        CatManager.OnCatAdded -= Show;
         _button.onClick.RemoveAllListeners();
     }
 }

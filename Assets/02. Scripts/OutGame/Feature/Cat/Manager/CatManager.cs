@@ -50,6 +50,7 @@ public class CatManager : MonoBehaviour
 
     // ===== Events =====
     public event Action OnCatChanged;
+    public static event Action<ECatType> OnCatAdded;
     public event Action<CatLevelDataSO> OnLevelChanged;
     public event Action<float> OnAffectionChanged;
     public event Action<String> OnNameChanged;
@@ -157,12 +158,14 @@ public class CatManager : MonoBehaviour
         _ownedCats[(int)catType] = newCat;
         TryLevelUp(catType); // 레벨 1로 설정
 
+        OnCatAdded?.Invoke(catType);
         Debug.Log($"새 고양이 획득: {catType}");
     }
 
-    public void SetCatName(String name)
+    public void SetCatName(ECatType catType,String name)
     {
-        _currentCat.Name = name;
+        _ownedCats[(int)catType].Name = name;
+        OnNameChanged?.Invoke(name);
 
     }
     public bool TryLevelUp(ECatType catType)

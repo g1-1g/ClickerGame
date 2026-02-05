@@ -20,11 +20,11 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
         try
         {
             await _db.Collection(COLLECTION_NAME).Document(_userID).SetAsync(saveData);
-            Debug.Log("저장 성공: ");
+            Debug.Log("[Currency] 저장 성공: ");
         }
         catch (System.Exception e)
         {
-            Debug.LogError("저장 실패: " + e);
+            Debug.LogError("[Currency] 저장 실패: " + e);
         }
     }
 
@@ -38,7 +38,7 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
             Debug.LogFormat("불러오기 성공");
             if (data == null)
             {
-                Debug.LogWarning("불러온 데이터가 null 입니다. 새로 생성합니다.");
+                Debug.LogWarning("[Currency] 불러온 데이터가 null 입니다. 새로 생성합니다.");
                 return CurrencySaveData.Default;
             }
             {
@@ -47,7 +47,7 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
         }
         catch (System.Exception e)
         {
-            Debug.LogError("불러오기 실패, 새로 생성합니다.:"  + e );
+            Debug.LogError("[Currency] 불러오기 실패, 새로 생성합니다.:" + e );
             return CurrencySaveData.Default;
         }
     }

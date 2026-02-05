@@ -66,14 +66,14 @@ public class LoginSceneManager : MonoBehaviour
 
     private void RemoveEvents()
     {
-        _idInputField.onValueChanged.RemoveListener(OnEmailTextChanged);
-        _passwordInputField.onValueChanged.RemoveListener(OnPasswordTextChanged);
-        _passwordConfirmInputField.onValueChanged.RemoveListener(OnPasswordConfirmTextChanged);
+        _idInputField?.onValueChanged.RemoveListener(OnEmailTextChanged);
+        _passwordInputField?.onValueChanged.RemoveListener(OnPasswordTextChanged);
+        _passwordConfirmInputField?.onValueChanged.RemoveListener(OnPasswordConfirmTextChanged);
 
-        _gotoRegisterButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoRegister);
-        _loginButton?.onClick.RemoveListener(Login);
-        _gotoLoginButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(GotoLogin);
-        _registerButtonObject.GetComponentInChildren<Button>()?.onClick.RemoveListener(Register);
+        _gotoRegisterButtonObject?.GetComponentInChildren<Button>()?.onClick?.RemoveListener(GotoRegister);
+        _loginButton?.onClick?.RemoveListener(Login);
+        _gotoLoginButtonObject?.GetComponentInChildren<Button>()?.onClick?.RemoveListener(GotoLogin);
+        _registerButtonObject?.GetComponentInChildren<Button>()?.onClick?.RemoveListener(Register);
     }
 
     private void Refresh()

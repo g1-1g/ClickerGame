@@ -25,9 +25,9 @@ public class AccountManager : MonoBehaviour
 
     private async void Awake()
     {
-        if (_instance != null || _instance == gameObject)
+        if (_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;
@@ -83,7 +83,7 @@ public class AccountManager : MonoBehaviour
             {
                 Success = true,
                 Message = result.Message,
-            };
+            };     
         }
         else
         {

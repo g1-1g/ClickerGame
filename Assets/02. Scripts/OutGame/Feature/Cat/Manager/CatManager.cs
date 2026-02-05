@@ -59,9 +59,9 @@ public class CatManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null || _instance == gameObject)
+        if (_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;
@@ -105,6 +105,8 @@ public class CatManager : MonoBehaviour
 
     public void SaveData()
     {
+        if (_currentCat == null) return;
+
         OwnedCatsSaveData saveData = new OwnedCatsSaveData()
         {
             CurrentCatType = _currentCat.CatType,
@@ -153,7 +155,7 @@ public class CatManager : MonoBehaviour
 
         var newCat = new CatData(catType);
         _ownedCats[(int)catType] = newCat;
-        TryLevelUp(); // 레벨 1로 설정
+        TryLevelUp(catType); // 레벨 1로 설정
 
         Debug.Log($"새 고양이 획득: {catType}");
     }
@@ -163,21 +165,27 @@ public class CatManager : MonoBehaviour
         _currentCat.Name = name;
 
     }
-    public bool TryLevelUp()
+    public bool TryLevelUp(ECatType catType)
     {
-        if (_catsDatabase.GetMaxLevel(_currentCat) == _currentCat.Level)
+        var cat = _ownedCats[(int)catType];
+
+        if (_catsDatabase.GetMaxLevel(cat) == cat.Level)
         {
             Debug.Log("이미 최고레벨 입니다.");
             return false;
         }
-        _currentCat.Level++;
+        cat.Level++;
 
-        _currentCat.Affection = 0;
+        cat.Affection = 0;
 
-        OnLevelChanged?.Invoke(_currentLevelData);
+        if (cat.CatType == _currentCat?.CatType)
+        {
+            OnLevelChanged?.Invoke(_currentLevelData);
+        }
+        
         SaveData();
 
-        if (_currentCat.Level == 1) return true;
+        if (cat.Level == 1) return true;
         PlayLevelUpAnimation();
         PlayLevelUpVFX(transform.position);
         return true;
@@ -190,7 +198,7 @@ public class CatManager : MonoBehaviour
 
         if (_currentCat.Affection >= _currentLevelData.RequiredAffection)
         {
-            TryLevelUp();
+            TryLevelUp(_currentCat.CatType);
         }
 
         OnAffectionChanged?.Invoke(AffectionRatio);

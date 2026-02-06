@@ -13,7 +13,7 @@ public class CatManager : MonoBehaviour
 
     // ===== Serialized Fields =====
     [Header("Cat Database")]
-    [SerializeField] private CatsSpecTableSO _catsDatabase;
+    [SerializeField] private CatSpecTableSO _catsDatabase;
     [SerializeField] private VFXPlayer _vfxPlayer;
     [SerializeField] private bool _defaultName = true;
 

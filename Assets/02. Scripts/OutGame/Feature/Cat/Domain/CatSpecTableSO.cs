@@ -2,8 +2,8 @@ using UnityEngine;
 using static UnityEditor.LightingExplorerTableColumn;
 
 
-[CreateAssetMenu(fileName = "CatsSpecTableSO", menuName = "ScriptableObjects/CatsSpecTableSO", order = 0)]
-public class CatsSpecTableSO : ScriptableObject
+[CreateAssetMenu(fileName = "CatSpecTableSO", menuName = "ScriptableObjects/CatSpecTableSO", order = 0)]
+public class CatSpecTableSO : ScriptableObject
 {
     [Header("고양이 정의 목록")]
     [SerializeField]

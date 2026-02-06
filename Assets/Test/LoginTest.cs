@@ -6,8 +6,8 @@ public class LoginTest : MonoBehaviour
     private async UniTask StartAsync()
     {
         AccountManager.Instance.Logout();
-        await AccountManager.Instance.TryRegister("djdjddfdjd@dndja.com", "dksjlfa1234!");
-        await AccountManager.Instance.TryLogin("djdjddfdjd@dndja.com", "dksjlfa1234!");
+        await AccountManager.Instance.TryRegister("jdjddfdjd@dndja.com", "dksjlfa1234!");
+        await AccountManager.Instance.TryLogin("jdjddfdjd@dndja.com", "dksjlfa1234!");
     }
 
     private async void Awake()

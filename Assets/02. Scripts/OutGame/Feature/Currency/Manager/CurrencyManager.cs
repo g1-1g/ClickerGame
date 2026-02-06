@@ -77,7 +77,6 @@ public class CurrencyManager : MonoBehaviour
     {
         _currencies[(int)type] += amount;
 
-        CatManager.Instance.AffectionUp(amount);
         OnDataChanged?.Invoke();
         OnCurrencyAdded?.Invoke(amount);
         SaveData();

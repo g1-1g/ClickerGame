@@ -144,7 +144,6 @@ public class CatManager : MonoBehaviour
     public bool AffectionUp(double amount)
     {
         bool isLevelUp = _currentCat.AffectionUp(amount, StatManager.Instance.GetStat(EItemType.AffectionGrowthRate));
-        
         _ownedCatsData[(int)_currentCat.CatType] = _currentCat.SaveData;
 
         SaveData();

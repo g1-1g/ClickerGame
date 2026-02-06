@@ -14,6 +14,16 @@ public class ClickTarget : MonoBehaviour, IClickable
 
         CurrencyManager.Instance.Add(ECurrencyType.Heart, clickInfo.HeartsAmount);
 
+
+        if (CatManager.Instance.AffectionUp(clickInfo.HeartsAmount))
+        {
+            var levelUpFeedbacks = GetComponentsInChildren<ILevelUpFeedback>();
+            foreach (var feedback in levelUpFeedbacks)
+            {
+                feedback.PlayLevelUp();
+            }
+        }
+
         return true;
     }
 }

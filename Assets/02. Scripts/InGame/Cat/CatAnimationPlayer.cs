@@ -26,7 +26,7 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
     {
         CatManager.Instance.OnLevelChanged += AnimationInit;
     }
-    public void AnimationInit(CatLevelDataSO data)
+    public void AnimationInit(CatLevelSpecData data)
     {
         overrideController[defaultIdleClip] = data.IdleAnimation;
         overrideController[defaultPetClip] = data.PetAnimation;

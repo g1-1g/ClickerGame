@@ -8,5 +8,5 @@ public class OwnedCatsSaveData
     [FirestoreProperty]
     public ECatType CurrentCatType { get; set; }
     [FirestoreProperty]
-    public CatData[] OwnedCats { get; set; } 
+    public CatSaveData[] OwnedCats { get; set; } 
 }

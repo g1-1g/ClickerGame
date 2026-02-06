@@ -31,7 +31,7 @@ public class UI_SetProfile : MonoBehaviour
         _catManager.OnNameChanged += CatNameUpdate;
     }
 
-    public void LevelUpdate(CatLevelDataSO data)
+    public void LevelUpdate(CatLevelSpecData data)
     {
         _levelText.text = $"Level. {data.Level}";
         _levelNameText.text = $"{data.LevelName}";

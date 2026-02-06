@@ -13,24 +13,24 @@ public class CatManager : MonoBehaviour
 
     // ===== Serialized Fields =====
     [Header("Cat Database")]
-    [SerializeField] private CatsDatabaseSO _catsDatabase;
+    [SerializeField] private CatsSpecTableSO _catsDatabase;
     [SerializeField] private VFXPlayer _vfxPlayer;
     [SerializeField] private bool _defaultName = true;
 
     // ===== Private Fields =====
     private ECatType _defaultCatType = ECatType.YellowCat;
     private float _heartsPerClick = 10;
-    private CatData _currentCat;
+    private CatSaveData _currentCat;
     private CatAnimationPlayer _animationPlayer;
-    private CatDatabaseSO _currentCatDatabase;
-    private CatData[] _ownedCats = new CatData[(int)ECatType.Count];
+    private CatSpecDataSO _currentCatDatabase;
+    private CatSaveData[] _ownedCats = new CatSaveData[(int)ECatType.Count];
     private ICatsRepository _repository;
     private bool _isReady = false;
 
     // ===== Properties =====
     public Sprite Image => _currentCatDatabase.Image;
-    public CatLevelDataSO CurrentLevelData => _currentLevelData;
-    public CatData CurrentCat => _currentCat;
+    public CatLevelSpecData CurrentLevelData => _currentLevelData;
+    public CatSaveData CurrentCat => _currentCat;
     public bool DefaultName => _defaultName;
     public float HeartsPerClick;
 
@@ -38,7 +38,7 @@ public class CatManager : MonoBehaviour
     {
         get
         {
-            if (_currentLevelData == null || _currentLevelData.RequiredAffection == 0)
+            if (_currentLevelData.RequiredAffection == 0)
             {
                 return 1;
             }
@@ -46,12 +46,12 @@ public class CatManager : MonoBehaviour
         }
     }
 
-    private CatLevelDataSO _currentLevelData => _catsDatabase.GetCatLevelData(_currentCat);
+    private CatLevelSpecData _currentLevelData => _catsDatabase.GetCatLevelData(_currentCat);
 
     // ===== Events =====
     public event Action OnCatChanged;
     public static event Action<ECatType> OnCatAdded;
-    public event Action<CatLevelDataSO> OnLevelChanged;
+    public event Action<CatLevelSpecData> OnLevelChanged;
     public event Action<float> OnAffectionChanged;
     public event Action<String> OnNameChanged;
 
@@ -154,7 +154,7 @@ public class CatManager : MonoBehaviour
             return;
         }
 
-        var newCat = new CatData(catType);
+        var newCat = new CatSaveData(catType);
         _ownedCats[(int)catType] = newCat;
         TryLevelUp(catType); // 레벨 1로 설정
 

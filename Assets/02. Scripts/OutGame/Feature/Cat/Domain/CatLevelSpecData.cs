@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CatLevelData", menuName = "ScriptableObjects/CatLevelData", order = 0)]
-public class CatLevelDataSO : ScriptableObject
+[Serializable]
+public struct CatLevelSpecData 
 {
     [Header("레벨 정보")]
     [Tooltip("레벨 Index")]

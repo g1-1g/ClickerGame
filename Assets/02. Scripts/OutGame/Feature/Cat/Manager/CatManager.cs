@@ -134,8 +134,9 @@ public class CatManager : MonoBehaviour
             return;
         }
 
-        _ownedCats.Add(catType, new Cat(_catSpecTable.GetCatData(catType), new CatSaveData(catType)));
-        _ownedCatsData[(int)catType] = _ownedCats[catType].SaveData;
+        Cat cat = new Cat(_catSpecTable.GetCatData(catType), new CatSaveData(catType));
+        _ownedCats.Add(catType, cat);
+        CommitCatToSaveData(cat);
 
         OnCatAdded?.Invoke(catType);
         Debug.Log($"새 고양이 획득: {catType}");
@@ -144,7 +145,7 @@ public class CatManager : MonoBehaviour
     public bool AffectionUp(double amount)
     {
         bool isLevelUp = _currentCat.AffectionUp(amount, StatManager.Instance.GetStat(EItemType.AffectionGrowthRate));
-        _ownedCatsData[(int)_currentCat.CatType] = _currentCat.SaveData;
+        CommitCatToSaveData(_currentCat);
 
         SaveData();
 
@@ -165,5 +166,18 @@ public class CatManager : MonoBehaviour
         {
             OnCatChanged?.Invoke();
         }    
+    }
+
+    private void CommitCatToSaveData(Cat cat)
+    {
+        CatSaveData saveData = new CatSaveData()
+        {
+            CatType = cat.CatType,
+            Name = cat.Name,
+            Level = cat.Level,
+            Affection = cat.Affection
+        };
+
+        _ownedCatsData[(int)cat.CatType] = saveData;
     }
 }

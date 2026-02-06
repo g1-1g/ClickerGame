@@ -1,6 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.LightingExplorerTableColumn;
-
 
 [CreateAssetMenu(fileName = "CatSpecTableSO", menuName = "ScriptableObjects/CatSpecTableSO", order = 0)]
 public class CatSpecTableSO : ScriptableObject
@@ -9,41 +8,41 @@ public class CatSpecTableSO : ScriptableObject
     [SerializeField]
     public CatSpecDataSO[] Cats;
 
-    public CatSpecDataSO GetCatData(ECatType catType)
+    private Dictionary<ECatType, CatSpecDataSO> _cats =  new Dictionary<ECatType, CatSpecDataSO>();
+
+    private void OnEnable()
     {
+        _cats.Clear();
         foreach (var cat in Cats)
         {
-            if (cat.CatType == catType)
-            {
-                return cat;
-            }
+            _cats[cat.CatType] = cat;
         }
-        return null;
+    }
+
+    public CatSpecDataSO GetCatData(ECatType catType)
+    {
+        _cats.TryGetValue(catType, out var cat);
+        return cat;
     }
 
     public CatLevelSpecData GetCatLevelData(ECatType catType, int level)
     {
-        foreach (var cat in Cats)
-        {
-            if (cat.CatType == catType)
-            {
-                cat.TryGetLevelData(level, out var spec);
-                return spec;
-            }
+        if (_cats.TryGetValue(catType, out var cat)){
+            cat.TryGetLevelData(level, out var spec);
+            return spec;
         }
-        Debug.LogWarning($"{catType}에 대한 Data가 없습니다.");
-        return default;
+
+            Debug.LogWarning($"{catType}에 대한 Data가 없습니다.");
+            return default;
     }
 
     public int GetMaxLevel(ECatType catType)
     {
-        foreach (var cat in Cats)
+        if (_cats.TryGetValue(catType, out var cat))
         {
-            if (cat.CatType == catType)
-            {
-                return cat.GetMaxLevel();
-            }
+            return cat.GetMaxLevel();
         }
+
         Debug.LogWarning($"{catType}에 대한 Data가 없습니다.");
         return 0;
     }

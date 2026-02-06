@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using static UnityEditor.Progress;
 
 
@@ -32,10 +33,9 @@ public class CatManager : MonoBehaviour
     public Cat CurrentCat => _currentCat;
 
     // ===== Events =====
-    public event Action OnCatChanged;
-    public event Action<bool> OnAffectionUp;
+    public static event Action OnCatChanged;
+    public static event Action<bool> OnAffectionUp;
     public static event Action<ECatType> OnCatAdded;
-    public event Action<String> OnCatNameChange;
 
     private void Awake()
     {
@@ -146,13 +146,16 @@ public class CatManager : MonoBehaviour
         bool isLevelUp = _currentCat.AffectionUp(amount, StatManager.Instance.GetStat(EItemType.AffectionGrowthRate));
         
         _ownedCatsData[(int)_currentCat.CatType] = _currentCat.SaveData;
+
         SaveData();
+
         OnAffectionUp?.Invoke(isLevelUp);
 
         if (isLevelUp)
-        {   
+        {
             return true;
         }
+        
         return false;   
     }
 
@@ -161,7 +164,7 @@ public class CatManager : MonoBehaviour
         _ownedCats[catType].SetCatName(name);
         if (_currentCat.CatType == catType)
         {
-            OnCatNameChange?.Invoke(name);
+            OnCatChanged?.Invoke();
         }    
     }
 }

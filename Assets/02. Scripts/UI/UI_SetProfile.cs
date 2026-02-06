@@ -1,9 +1,6 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class UI_SetProfile : MonoBehaviour
 {
@@ -26,8 +23,8 @@ public class UI_SetProfile : MonoBehaviour
 
     private void Init()
     {
-        _catManager.OnCatChanged += CatUpdate;
-        _catManager.OnAffectionUp += AffectionUpdate;
+        CatManager.OnCatChanged += CatUpdate;
+        CatManager.OnAffectionUp += AffectionUpdate;
     }
 
     public void LevelUpdate(CatLevelSpecData data)
@@ -54,7 +51,7 @@ public class UI_SetProfile : MonoBehaviour
     public void CatUpdate()
     {
         _affectionSlider.value = 0;
-        _image.sprite = _catManager.CurrentCat.CatSpecData.Image;
+        _image.sprite = _catManager.CurrentCat.Image;
         _nameText.text = _catManager.CurrentCat.Name;
 
         LevelUpdate(_catManager.CurrentCat.GetLevelData());
@@ -68,7 +65,7 @@ public class UI_SetProfile : MonoBehaviour
 
     public void OnDestroy()
     {
-        _catManager.OnAffectionUp -= AffectionUpdate;
-        _catManager.OnCatChanged -= CatUpdate;
+        CatManager.OnAffectionUp -= AffectionUpdate;
+        CatManager.OnCatChanged -= CatUpdate;
     }
 }

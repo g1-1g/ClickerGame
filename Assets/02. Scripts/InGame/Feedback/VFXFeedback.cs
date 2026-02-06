@@ -11,7 +11,7 @@ public class VFXFeedback : MonoBehaviour, IFeedback
 
     public void Start()
     {
-        CatManager.Instance.OnAffectionUp += LevelUpVFXPlay;
+        CatManager.OnAffectionUp += LevelUpVFXPlay;
     }
 
     private void LevelUpVFXPlay(bool value)
@@ -24,5 +24,10 @@ public class VFXFeedback : MonoBehaviour, IFeedback
     public void Play(ClickInfo clickInfo)
     {
         HeartAmountVFXSpawner.Instance.ShowAmountVFX(clickInfo);
+    }
+
+    public void OnDestroy()
+    {
+        CatManager.OnAffectionUp -= LevelUpVFXPlay;
     }
 }

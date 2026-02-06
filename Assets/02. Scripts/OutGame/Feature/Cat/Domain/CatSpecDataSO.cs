@@ -22,7 +22,7 @@ public class CatSpecDataSO : ScriptableObject
         if (index >= 0 && index < _levels.Count)
         {
             data =_levels[index];
-            return false;
+            return true;
         }
 
         Debug.LogWarning($"레벨 {level}에 해당하는 데이터가 없습니다.");

@@ -1,20 +1,18 @@
 using System;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
-using UnityEditor.U2D.Tooling.Analyzer;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UI;
 
 public class Cat 
 {
     public readonly CatSpecDataSO CatSpecData;
 
-    public CatSaveData SaveData;
+    public readonly CatSaveData SaveData;
 
     public ECatType CatType => CatSpecData.CatType;
 
-    public String Name => SaveData.Name;
+    public string Name => SaveData.Name;
+
+    public Sprite Image => CatSpecData.Image;
 
     public float AffectionRatio
     {
@@ -38,7 +36,7 @@ public class Cat
 
         if (specData.Image == null) throw new System.ArgumentException($"이미지는 null일 수 없습니다.");
         if (specData.GetMaxLevel() == 0) throw new System.ArgumentException($"레벨 데이터가 없습니다.");
-        if (specData.LevelUpClip) throw new System.ArgumentException($"레벨업 애니메이션 Clip이 비어있습니다.");
+        if (!specData.LevelUpClip) throw new System.ArgumentException($"레벨업 애니메이션 Clip이 비어있습니다.");
     }
 
     public CatLevelSpecData GetLevelData()

@@ -19,18 +19,18 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
         
         overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = overrideController;
-
     }
 
     void Start()
     {
-        CatManager.Instance.OnAffectionUp += PlayPetAnimation;
-        CatManager.Instance.OnCatChanged += AnimationInit;
+        CatManager.OnAffectionUp += PlayPetAnimation;
+        CatManager.OnCatChanged += AnimationInit;
     }
     public void AnimationInit()
     {
-        overrideController[defaultIdleClip] = CatManager.Instance.CurrentCat.GetLevelData().IdleAnimation;
-        overrideController[defaultPetClip] = CatManager.Instance.CurrentCat.GetLevelData().PetAnimation;
+        CatLevelSpecData data = CatManager.Instance.CurrentCat.GetLevelData();
+        overrideController[defaultIdleClip] = data.IdleAnimation;
+        overrideController[defaultPetClip] = data.PetAnimation;
         //overrideController[defaultLevelUpClip] = data.LevelUpAnimation;
     }
 
@@ -38,8 +38,8 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
     {
         if (isLevelUp)
         {
-            LevelUpTrigger();
             AnimationInit();
+            LevelUpTrigger();
         }
         else
         {
@@ -74,6 +74,7 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     private void OnDestroy()
     {
-        CatManager.Instance.OnAffectionUp -= PlayPetAnimation;
+        CatManager.OnAffectionUp -= PlayPetAnimation;
+        CatManager.OnCatChanged -= AnimationInit;
     }
 }

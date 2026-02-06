@@ -16,15 +16,15 @@ public class CatSaveData
     [FirestoreProperty]
     public ECatType CatType { get; set; }
 
-    public CatSaveData()
-    {
-        Name = "MOZZI";
-        Level = 0;
-        Affection = 0;
-    }
-
     public CatSaveData(ECatType catType) :this()
     {
         CatType = catType;
+    }
+
+    public CatSaveData()
+    {
+        Name = "MOZZI";
+        Level = 1;
+        Affection = 0;
     }
 }

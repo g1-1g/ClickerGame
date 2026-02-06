@@ -24,13 +24,27 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     void Start()
     {
-        CatManager.Instance.OnLevelChanged += AnimationInit;
+        CatManager.Instance.OnAffectionUp += PlayPetAnimation;
+        CatManager.Instance.OnCatChanged += AnimationInit;
     }
-    public void AnimationInit(CatLevelSpecData data)
+    public void AnimationInit()
     {
-        overrideController[defaultIdleClip] = data.IdleAnimation;
-        overrideController[defaultPetClip] = data.PetAnimation;
+        overrideController[defaultIdleClip] = CatManager.Instance.CurrentCat.GetLevelData().IdleAnimation;
+        overrideController[defaultPetClip] = CatManager.Instance.CurrentCat.GetLevelData().PetAnimation;
         //overrideController[defaultLevelUpClip] = data.LevelUpAnimation;
+    }
+
+    public void PlayPetAnimation(bool isLevelUp)
+    {
+        if (isLevelUp)
+        {
+            LevelUpTrigger();
+            AnimationInit();
+        }
+        else
+        {
+            SetPetBool(true);
+        }
     }
 
     public void SetPetBool(bool value)
@@ -60,6 +74,6 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     private void OnDestroy()
     {
-        CatManager.Instance.OnLevelChanged -= AnimationInit;
+        CatManager.Instance.OnAffectionUp -= PlayPetAnimation;
     }
 }

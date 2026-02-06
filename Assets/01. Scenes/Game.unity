@@ -1343,6 +1343,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &531772089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 531772091}
+  - component: {fileID: 531772090}
+  m_Layer: 0
+  m_Name: CatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &531772090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531772089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729f6c4d0c0a81d4790a2e587113d823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CatManager
+  _catSpecTable: {fileID: 11400000, guid: 74c494eee71aa1b4ea006a5c33898ebc, type: 2}
+  _defaultName: 1
+--- !u!4 &531772091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531772089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 379.38873, y: 1065.8248, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &540840968
 GameObject:
   m_ObjectHideFlags: 0
@@ -4091,7 +4137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1403462983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6080,7 +6126,6 @@ GameObject:
   - component: {fileID: 3733062333209290474}
   - component: {fileID: 8126681914818104143}
   - component: {fileID: 28940319652291325}
-  - component: {fileID: 8126681914818104144}
   m_Layer: 0
   m_Name: CatViewObject
   m_TagString: Untagged
@@ -6115,6 +6160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80f8263a0c25884ea8e18960891ace2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VFXFeedback
+  _levelUp: {fileID: 6573408992485362369}
 --- !u!114 &4365322711816802633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16087,22 +16133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5cab678ccce294eb28ccb925c4bcc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmountFloatFeedback
---- !u!114 &8126681914818104144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2163681632258643561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729f6c4d0c0a81d4790a2e587113d823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CatManager
-  _catsDatabase: {fileID: 11400000, guid: 74c494eee71aa1b4ea006a5c33898ebc, type: 2}
-  _vfxPlayer: {fileID: 6573408992485362369}
-  _defaultName: 1
-  HeartsPerClick: 0
 --- !u!114 &8126681914818104145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16136,3 +16166,4 @@ SceneRoots:
   - {fileID: 1081120119}
   - {fileID: 2409308456022927255}
   - {fileID: 1403462984}
+  - {fileID: 531772091}

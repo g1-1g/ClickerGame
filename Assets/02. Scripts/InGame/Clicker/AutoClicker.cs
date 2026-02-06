@@ -15,7 +15,7 @@ public class AutoClicker : MonoBehaviour
         ClickInfo clickInfo = new ClickInfo
         {
             Type = EClickType.Auto,
-            HeartsAmount = CatManager.Instance.HeartsPerClick,
+            HeartsAmount = StatManager.Instance.GetStat(EItemType.HeartPerClick) ,
             Position = position,
         };
 

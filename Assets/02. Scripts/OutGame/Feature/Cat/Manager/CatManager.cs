@@ -1,8 +1,9 @@
 using System;
-
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 public class CatManager : MonoBehaviour
@@ -13,50 +14,28 @@ public class CatManager : MonoBehaviour
 
     // ===== Serialized Fields =====
     [Header("Cat Database")]
-    [SerializeField] private CatSpecTableSO _catsDatabase;
-    [SerializeField] private VFXPlayer _vfxPlayer;
+    [SerializeField] private CatSpecTableSO _catSpecTable;
+
     [SerializeField] private bool _defaultName = true;
 
     // ===== Private Fields =====
     private ECatType _defaultCatType = ECatType.YellowCat;
-    private float _heartsPerClick = 10;
-    private CatSaveData _currentCat;
-    private CatAnimationPlayer _animationPlayer;
-    private CatSpecDataSO _currentCatDatabase;
-    private CatSaveData[] _ownedCats = new CatSaveData[(int)ECatType.Count];
+    private Dictionary<ECatType, Cat> _ownedCats = new Dictionary<ECatType, Cat>();
+    private CatSaveData[] _ownedCatsData = new CatSaveData[(int)ECatType.Count]; 
+    private Cat _currentCat;
+  
     private ICatsRepository _repository;
+
     private bool _isReady = false;
 
     // ===== Properties =====
-    public Sprite Image => _currentCatDatabase.Image;
-    public CatLevelSpecData CurrentLevelData => _currentLevelData;
-    public CatSaveData CurrentCat => _currentCat;
-    public bool DefaultName => _defaultName;
-    public float HeartsPerClick;
-
-    public float AffectionRatio
-    {
-        get
-        {
-            if (_currentLevelData.RequiredAffection == 0)
-            {
-                return 1;
-            }
-            return (float)(_currentCat.Affection / _currentLevelData.RequiredAffection);
-        }
-    }
-
-    private CatLevelSpecData _currentLevelData => _catsDatabase.GetCatLevelData(_currentCat);
+    public Cat CurrentCat => _currentCat;
 
     // ===== Events =====
     public event Action OnCatChanged;
+    public event Action<bool> OnAffectionUp;
     public static event Action<ECatType> OnCatAdded;
-    public event Action<CatLevelSpecData> OnLevelChanged;
-    public event Action<float> OnAffectionChanged;
-    public event Action<String> OnNameChanged;
-
-
-
+    public event Action<String> OnCatNameChange;
 
     private void Awake()
     {
@@ -69,7 +48,6 @@ public class CatManager : MonoBehaviour
     }
     private async void Start()
     {
-        _animationPlayer = GetComponent<CatAnimationPlayer>();
         // Firebase 초기화 대기
         await WaitForFirebaseAsync();
 
@@ -78,43 +56,6 @@ public class CatManager : MonoBehaviour
 
         // 데이터 로드
         await LoadData();
-
-        CurrencyManager.OnCurrencyAdded += AffectionUp;
-    }
-
-    public async UniTask LoadData()
-    {
-        var loadedData = await _repository.Load();
-
-        if (loadedData == null)
-        {
-            // 데이터 없으면 기본값으로 초기화
-            Debug.Log("[CatManager] 기본값 생성");
-            AddCat(_defaultCatType);
-
-            SetCat(_defaultCatType);
-            // 즉시 저장 (다음부터는 로드됨)
-        }
-        else
-        {
-            _ownedCats = loadedData.OwnedCats;
-            SetCat(loadedData.CurrentCatType);
-        }
-
-        Debug.Log("[CatManager] 데이터 로드 완료");
-    }
-
-    public void SaveData()
-    {
-        if (_currentCat == null) return;
-
-        OwnedCatsSaveData saveData = new OwnedCatsSaveData()
-        {
-            CurrentCatType = _currentCat.CatType,
-            OwnedCats = _ownedCats,
-        };
-
-        _repository.Save(saveData);
     }
 
     private async UniTask WaitForFirebaseAsync()
@@ -129,101 +70,98 @@ public class CatManager : MonoBehaviour
         _isReady = true;
     }
 
+    public async UniTask LoadData()
+    {
+        var loadedData = await _repository.Load();
+
+        if (loadedData == null)
+        {
+            // 데이터 없으면 기본값으로 초기화
+            Debug.Log("[CatManager] 기본값 생성");
+            AddCat(_defaultCatType);
+
+            SetCat(_defaultCatType);
+        }
+        else
+        {
+            for (int i = 0; i < loadedData.OwnedCats.Length; i++)
+            {
+                if (loadedData.OwnedCats[i] == null) continue;
+                _ownedCats.Add((ECatType)i, new Cat((_catSpecTable.GetCatData((ECatType)i)), loadedData.OwnedCats[i]));
+            }
+
+            _currentCat = _ownedCats[loadedData.CurrentCatType];
+            _ownedCatsData = loadedData.OwnedCats;
+            SetCat(loadedData.CurrentCatType);
+        }
+
+        Debug.Log("[CatManager] 데이터 로드 완료");
+    }
+
+    public void SaveData()
+    {
+        if (_currentCat == null) return;
+
+        OwnedCatsSaveData saveData = new OwnedCatsSaveData()
+        {
+            CurrentCatType = _currentCat.CatType,
+            OwnedCats = _ownedCatsData,
+        };
+
+        _repository.Save(saveData);
+    }
+
     public void SetCat(ECatType catType)
     {
-        if (_ownedCats[(int)catType] == null)
+        if (!_ownedCats.ContainsKey(catType))
         {
             Debug.LogError($"해당 고양이를 소유하고 있지 않습니다.: {catType}");
             return;
         }
 
-        _currentCat = _ownedCats[(int)catType];
-        _currentCatDatabase = _catsDatabase.GetCatData(_currentCat);
+        _currentCat = _ownedCats[catType];
      
         SaveData();
 
         OnCatChanged?.Invoke();
-        OnLevelChanged?.Invoke(_currentLevelData);
     }
 
     public void AddCat(ECatType catType)
     {
-        if (_ownedCats[(int)catType] != null)
+        if (_ownedCats.ContainsKey(catType))
         {
             Debug.LogWarning($"이미 보유 중인 고양이: {catType}");
             return;
         }
 
-        var newCat = new CatSaveData(catType);
-        _ownedCats[(int)catType] = newCat;
-        TryLevelUp(catType); // 레벨 1로 설정
+        _ownedCats.Add(catType, new Cat(_catSpecTable.GetCatData(catType), new CatSaveData(catType)));
+        _ownedCatsData[(int)catType] = _ownedCats[catType].SaveData;
 
         OnCatAdded?.Invoke(catType);
         Debug.Log($"새 고양이 획득: {catType}");
     }
 
-    public void SetCatName(ECatType catType,String name)
+    public bool AffectionUp(double amount)
     {
-        _ownedCats[(int)catType].Name = name;
-        OnNameChanged?.Invoke(name);
-
-    }
-    public bool TryLevelUp(ECatType catType)
-    {
-        var cat = _ownedCats[(int)catType];
-
-        if (_catsDatabase.GetMaxLevel(cat) == cat.Level)
-        {
-            Debug.Log("이미 최고레벨 입니다.");
-            return false;
-        }
-        cat.Level++;
-
-        cat.Affection = 0;
-
-        if (cat.CatType == _currentCat?.CatType)
-        {
-            OnLevelChanged?.Invoke(_currentLevelData);
-        }
+        bool isLevelUp = _currentCat.AffectionUp(amount, StatManager.Instance.GetStat(EItemType.AffectionGrowthRate));
         
+        _ownedCatsData[(int)_currentCat.CatType] = _currentCat.SaveData;
         SaveData();
+        OnAffectionUp?.Invoke(isLevelUp);
 
-        if (cat.Level == 1) return true;
-        PlayLevelUpAnimation();
-        PlayLevelUpVFX(transform.position);
-        return true;
-    }
-
-
-    public void AffectionUp(double value)
-    {
-        _currentCat.Affection += value + value * StatManager.Instance.GetStat(EItemType.AffectionGrowthRate);
-
-        if (_currentCat.Affection >= _currentLevelData.RequiredAffection)
-        {
-            TryLevelUp(_currentCat.CatType);
+        if (isLevelUp)
+        {   
+            return true;
         }
-
-        OnAffectionChanged?.Invoke(AffectionRatio);
-        SaveData();
-    }
-    public void PlayLevelUpVFX(Vector3 position)
-    {
-        _vfxPlayer.Play(position);
+        return false;   
     }
 
-    public void PlayLevelUpAnimation()
+    public void SetName(ECatType catType, string name)
     {
-        _animationPlayer.LevelUpTrigger();
-    }
-
-    public void IncreaseHeartPerClick(float value)
-    {
-        _heartsPerClick += value;
-    }
-
-    public void OnDestroy()
-    {
-        CurrencyManager.OnCurrencyAdded -= AffectionUp;
+        _ownedCats[catType].SetCatName(name);
+        if (_currentCat.CatType == catType)
+        {
+            OnCatNameChange?.Invoke(name);
+        }    
     }
 }

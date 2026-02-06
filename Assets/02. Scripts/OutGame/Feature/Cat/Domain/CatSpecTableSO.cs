@@ -7,21 +7,44 @@ public class CatSpecTableSO : ScriptableObject
 {
     [Header("고양이 정의 목록")]
     [SerializeField]
-    private CatSpecDataSO[] _cats;
+    public CatSpecDataSO[] Cats;
 
-    public CatSpecDataSO GetCatData(CatSaveData data)
+    public CatSpecDataSO GetCatData(ECatType catType)
     {
-        return _cats[(int)data.CatType];
+        foreach (var cat in Cats)
+        {
+            if (cat.CatType == catType)
+            {
+                return cat;
+            }
+        }
+        return null;
     }
 
-    public CatLevelSpecData GetCatLevelData(CatSaveData data)
+    public CatLevelSpecData GetCatLevelData(ECatType catType, int level)
     {
-        _cats[(int)data.CatType].TryGetLevelData(data.Level, out var spec);
-        return spec;
+        foreach (var cat in Cats)
+        {
+            if (cat.CatType == catType)
+            {
+                cat.TryGetLevelData(level, out var spec);
+                return spec;
+            }
+        }
+        Debug.LogWarning($"{catType}에 대한 Data가 없습니다.");
+        return default;
     }
 
-    public int GetMaxLevel(CatSaveData data)
+    public int GetMaxLevel(ECatType catType)
     {
-        return _cats[(int)data.CatType].GetMaxLevel();
+        foreach (var cat in Cats)
+        {
+            if (cat.CatType == catType)
+            {
+                return cat.GetMaxLevel();
+            }
+        }
+        Debug.LogWarning($"{catType}에 대한 Data가 없습니다.");
+        return 0;
     }
 }

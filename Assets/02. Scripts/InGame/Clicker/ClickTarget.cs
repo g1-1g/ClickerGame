@@ -13,7 +13,6 @@ public class ClickTarget : MonoBehaviour, IClickable
         }
 
         CurrencyManager.Instance.Add(ECurrencyType.Heart, clickInfo.HeartsAmount);
-        CatManager.Instance.AffectionUp(clickInfo.HeartsAmount);
 
         return true;
     }

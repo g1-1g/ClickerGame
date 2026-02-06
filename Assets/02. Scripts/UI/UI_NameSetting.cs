@@ -31,7 +31,7 @@ public class UI_NameSetting : MonoBehaviour
 
     private void SetName()
     {
-        CatManager.Instance.SetCatName(_targetCat, _inputField.text);
+        CatManager.Instance.SetName(_targetCat, _inputField.text);
         _popup.Down();
     }
 

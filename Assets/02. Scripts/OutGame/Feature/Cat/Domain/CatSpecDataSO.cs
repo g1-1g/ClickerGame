@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CatSpecDataSO", menuName = "ScriptableObjects/CatSpecDataSO", order = 0)]
 public class CatSpecDataSO : ScriptableObject
 {
+    public ECatType CatType;
+
     [SerializeField]
     public Sprite Image;
 
@@ -30,6 +32,11 @@ public class CatSpecDataSO : ScriptableObject
 
     public int GetMaxLevel()
     {
+        if (_levels == null)
+        {
+            Debug.LogWarning("레벨 데이터 목록이 할당되지 않았습니다.");
+            return 0;
+        }
         return _levels.Count;
     }
 }

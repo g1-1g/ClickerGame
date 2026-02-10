@@ -1,7 +1,5 @@
-using System.Threading;
 using Lean.Pool;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class AutoClickerSpawner : MonoBehaviour
 {

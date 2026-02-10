@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using static UnityEditor.Progress;
 
 
 public class CatManager : MonoBehaviour

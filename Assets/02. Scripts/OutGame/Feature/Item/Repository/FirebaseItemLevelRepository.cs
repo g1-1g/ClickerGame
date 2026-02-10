@@ -1,7 +1,5 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using Firebase.Firestore;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 public class FirebaseItemLevelRepository : IItemLevelRepository

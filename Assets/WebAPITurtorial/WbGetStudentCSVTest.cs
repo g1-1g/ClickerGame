@@ -1,4 +1,9 @@
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,28 +14,19 @@ public class WbGetStudentCSVTest : MonoBehaviour
     {
         //서버에게 데이터 요청하는 작업은 비동기 => 코루틴으로 처리
         string text = await GetWebText("https://raw.githubusercontent.com/mongilteacher/skku2_script_study/refs/heads/main/students.csv");
-        Debug.Log(text);
+        text = text.TrimStart('\uFEFF');
 
-        List<Person> people = new List<Person>();
+        // CSV-Helper (어떻게 구현 됐냐보다는 API 문서를 보고 사용하는 법을 익히는게 중요)
+        var config = new CsvConfiguration(CultureInfo.CurrentCulture);
+        var stringReader = new StringReader(text);
+        var csv = new CsvReader(stringReader, config);
 
-        string[] lines = text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
-        for ( int i = 1; i < lines.Length; i++)
+        List <Person> people = new List<Person>();
+        people = csv.GetRecords<Person>().ToList();
+
+        foreach ( var p in people)
         {
-            string line = lines[i].Trim();
-    
-            if (string.IsNullOrWhiteSpace(line))
-                continue;
-
-            string[] tokens = line.Split(',');
-            Person p = new Person();
-            p.name = tokens[1];
-            p.age = int.Parse(tokens[2]);
-            people.Add(p);
-        }
-
-        foreach (Person p in people)
-        {
-            Debug.Log($"Name: {p.name}, Age: {p.age}");
+            Debug.Log($"Name: {p.Name}, Age: {p.Age}");
         }
     }
 

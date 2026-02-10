@@ -4,7 +4,7 @@ public class ClickTarget : MonoBehaviour, IClickable
 {
     public bool OnClick(ClickInfo clickInfo)
     {
-        Debug.Log($"{gameObject.name}: ¾²´ã");
+        Debug.Log($"{gameObject.name}: ì“°ë‹´");
 
         var feedbacks = GetComponentsInChildren<IFeedback>();
         foreach ( var feedback in feedbacks )
@@ -13,6 +13,17 @@ public class ClickTarget : MonoBehaviour, IClickable
         }
 
         CurrencyManager.Instance.Add(ECurrencyType.Heart, clickInfo.HeartsAmount);
+
+
+        if (CatManager.Instance.AffectionUp(clickInfo.HeartsAmount))
+        {
+            var levelUpFeedbacks = GetComponentsInChildren<ILevelUpFeedback>();
+            foreach (var feedback in levelUpFeedbacks)
+            {
+                feedback.PlayLevelUp();
+            }
+        }
+
         return true;
     }
 }

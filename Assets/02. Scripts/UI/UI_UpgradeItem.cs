@@ -12,12 +12,14 @@ public class UI_UpgradeItem : MonoBehaviour
 
     public Image UpgradeButtonImage;
     public Button UpgradeButton;
+    private ButtonReactionController _upgradeButtonAnimation;
 
     private Item _item;
 
-    public void Start()
+    public void Awake()
     {
         UpgradeButton.onClick.AddListener(LevelUp);
+        UpgradeButton.TryGetComponent<ButtonReactionController>(out _upgradeButtonAnimation);
     }
 
     public void OnDestroy()
@@ -38,8 +40,7 @@ public class UI_UpgradeItem : MonoBehaviour
 
         CostTextUI.color = canLevelUp ? Color.white : Color.gray4;
         UpgradeButtonImage.color = canLevelUp ? Color.white : Color.gray4;
-        UpgradeButton.TryGetComponent<ButtonReactionController>(out ButtonReactionController UpgradeButtonAnimation);
-        UpgradeButtonAnimation.Active = canLevelUp? true : false;
+        _upgradeButtonAnimation.Active = canLevelUp? true : false;
         UpgradeButton.interactable = canLevelUp;
     }
 

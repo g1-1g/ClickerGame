@@ -1,16 +1,14 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_SetProfile : MonoBehaviour
 {
-    [SerializeField] private Image _image;
+    [SerializeField] private UnityEngine.UI.Image _image;
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private TextMeshProUGUI _levelNameText;
-    [SerializeField] private Slider _affectionSlider;
+    [SerializeField] private UnityEngine.UI.Slider _affectionSlider;
 
     [SerializeField] private float _doTweenDuration;
 
@@ -25,33 +23,39 @@ public class UI_SetProfile : MonoBehaviour
 
     private void Init()
     {
-        _catManager.OnCatChanged += CatUpdate;
-        _catManager.OnAffectionChanged += AffectionUpdate;
-        _catManager.OnLevelChanged += LevelUpdate;
-        _catManager.OnNameChanged += CatNameUpdate;
+        CatManager.OnCatChanged += CatUpdate;
+        CatManager.OnAffectionUp += AffectionUpdate;
     }
 
-    public void LevelUpdate(CatLevelDataSO data)
+    public void LevelUpdate(CatLevelSpecData data)
     {
         _levelText.text = $"Level. {data.Level}";
         _levelNameText.text = $"{data.LevelName}";
+
+        _affectionSlider.DOValue(1, _doTweenDuration).OnComplete(() =>
+        _affectionSlider.DOValue(_catManager.CurrentCat.AffectionRatio, _doTweenDuration));
     }
 
-    public void AffectionUpdate(float ratio)
-    {
-        _affectionSlider.DOComplete();
 
-        _affectionSlider.DOValue(ratio, _doTweenDuration);
+    public void AffectionUpdate(bool isLevelUp)
+    {
+        _affectionSlider.DOKill();
+
+        if (isLevelUp)
+        {
+            LevelUpdate(_catManager.CurrentCat.GetLevelData());
+        }
+        _affectionSlider.DOValue(_catManager.CurrentCat.AffectionRatio, _doTweenDuration);
     }
 
     public void CatUpdate()
     {
         _affectionSlider.value = 0;
-        _image.sprite = _catManager.Image;
+        _image.sprite = _catManager.CurrentCat.Image;
         _nameText.text = _catManager.CurrentCat.Name;
 
-        LevelUpdate(_catManager.CurrentLevelData);
-        AffectionUpdate(CatManager.Instance.AffectionRatio);
+        LevelUpdate(_catManager.CurrentCat.GetLevelData());
+        AffectionUpdate(false);
     }
 
     public void CatNameUpdate(string name)
@@ -61,9 +65,7 @@ public class UI_SetProfile : MonoBehaviour
 
     public void OnDestroy()
     {
-        _catManager.OnAffectionChanged -= AffectionUpdate;
-        _catManager.OnLevelChanged -= LevelUpdate;
-        _catManager.OnNameChanged -= CatNameUpdate;
-        _catManager.OnCatChanged -= CatUpdate;
+        CatManager.OnAffectionUp -= AffectionUpdate;
+        CatManager.OnCatChanged -= CatUpdate;
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CatAnimationPlayer : MonoBehaviour, IFeedback
+public class CatAnimationPlayer : MonoBehaviour, IFeedback, ILevelUpFeedback
 {
     private Animator _animator;
     private AnimatorOverrideController overrideController;
@@ -19,20 +19,19 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
         
         overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = overrideController;
-
     }
 
     void Start()
     {
-        CatManager.Instance.OnLevelChanged += AnimationInit;
+        CatManager.OnCatChanged += AnimationInit;
     }
-    public void AnimationInit(CatLevelDataSO data)
+    public void AnimationInit()
     {
+        CatLevelSpecData data = CatManager.Instance.CurrentCat.GetLevelData();
         overrideController[defaultIdleClip] = data.IdleAnimation;
         overrideController[defaultPetClip] = data.PetAnimation;
         //overrideController[defaultLevelUpClip] = data.LevelUpAnimation;
     }
-
     public void SetPetBool(bool value)
     {
         _animator.SetBool(_petHash, value);
@@ -48,6 +47,11 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
         _petCount++;
         SetPetBool(true);
     }
+    public void PlayLevelUp()
+    {
+        AnimationInit();
+        LevelUpTrigger();
+    }
 
     public void OnPlayEnd()
     {
@@ -60,6 +64,6 @@ public class CatAnimationPlayer : MonoBehaviour, IFeedback
 
     private void OnDestroy()
     {
-        CatManager.Instance.OnLevelChanged -= AnimationInit;
+        CatManager.OnCatChanged -= AnimationInit;
     }
 }

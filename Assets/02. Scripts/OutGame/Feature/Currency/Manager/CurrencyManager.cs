@@ -31,18 +31,27 @@ public class CurrencyManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Start()
+    private async void Start()
     {
-        FirebaseInitializer.OnFirebaseInitialized += Init;
-    }
+        await WaitForFirebaseAsync();
 
-    private async void Init()
-    {
-         // Repository 생성
+        // Repository 생성
         _repository = new FirebaseCurrencyRepository(AccountManager.Instance.Email);
 
         // 데이터 로드
         await LoadData();
+
+        _isReady = true;
+    }
+
+    private async UniTask WaitForFirebaseAsync()
+    {
+        // FirebaseManager가 준비될 때까지 대기
+        while (FirebaseInitializer.Instance == null ||
+               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
+        {
+            await UniTask.Yield();
+        }
 
         _isReady = true;
     }
@@ -68,7 +77,6 @@ public class CurrencyManager : MonoBehaviour
     {
         _currencies[(int)type] += amount;
 
-        CatManager.Instance.AffectionUp(amount);
         OnDataChanged?.Invoke();
         OnCurrencyAdded?.Invoke(amount);
         SaveData();
@@ -95,10 +103,5 @@ public class CurrencyManager : MonoBehaviour
         }
 
         return true;
-    }
-
-    public void OnDestroy()
-    {
-        FirebaseInitializer.OnFirebaseInitialized -= Init;
     }
 }

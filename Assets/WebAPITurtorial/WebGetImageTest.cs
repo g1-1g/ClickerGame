@@ -12,7 +12,7 @@ public class WebGetImageTest : MonoBehaviour
 
     async void Start()
     {
-        Texture myTexture = await GetWebTexture("https://image.aladin.co.kr/product/25063/38/cover500/8964135725_1.jpg");
+        Texture myTexture = await GetWebTexture("https://placecats.com/500/500?fit=outside");
         _myImage.texture = myTexture;
     }
 

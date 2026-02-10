@@ -13,10 +13,10 @@ public class WbGetStudentCSVTest : MonoBehaviour
 
         List<Person> people = new List<Person>();
 
-        string[] lines = text.Split('\n');
+        string[] lines = text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
         for ( int i = 1; i < lines.Length; i++)
         {
-            string line = lines[i];
+            string line = lines[i].Trim();
     
             if (string.IsNullOrWhiteSpace(line))
                 continue;

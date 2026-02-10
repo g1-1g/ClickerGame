@@ -1,5 +1,6 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -17,15 +18,24 @@ public class WebGetImageTest : MonoBehaviour
 
     async UniTask<Texture> GetWebTexture(string url)
     {
-        var result = (await UnityWebRequestTexture.GetTexture(url).SendWebRequest());
-        if (result.result != UnityWebRequest.Result.Success)
+        try
         {
-            Debug.Log(result.error);
-            return null;
+            var result = (await UnityWebRequestTexture.GetTexture(url).SendWebRequest());
+            if (result.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(result.error);
+                return null;
+            }
+            else
+            {
+                return ((DownloadHandlerTexture)result.downloadHandler).texture;
+            }
         }
-        else
+        catch (System.Exception e)
         {
-            return ((DownloadHandlerTexture)result.downloadHandler).texture;
+            Debug.Log(e.Message);
+            return null;
+
         }
     }
     IEnumerator GetTexture(string url)

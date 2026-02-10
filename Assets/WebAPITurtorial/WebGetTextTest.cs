@@ -16,8 +16,17 @@ public class WebGetTextTest : MonoBehaviour
 
     public async UniTask<string> GetWebText(string url)
     {
-        var result = (await UnityWebRequest.Get(url).SendWebRequest()).downloadHandler.text;
-        return result;
+        try
+        {
+            var result = (await UnityWebRequest.Get(url).SendWebRequest()).downloadHandler.text;
+            return result;
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e.Message);
+            return null;
+        }
+
     }
 
     IEnumerator GetText()

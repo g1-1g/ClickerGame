@@ -87,16 +87,17 @@ public class ItemManager : MonoBehaviour
             return false;
         }
 
+        if (!item.CanLevelUp())
+        {
+            return false;
+        }
+
         if (!CurrencyManager.Instance.TrySpend(ECurrencyType.Heart, item.Cost))
         {
             return false;
         }
 
-        if (!item.TryLevelUp())
-        {
-            return false;
-        }
-
+        item.TryLevelUp();
         _levels[(int)type] = item.Level;
 
         OnDataChanged?.Invoke(type);

@@ -18,7 +18,10 @@ public class CurrencyRepository : ICurrencyRepository
         for (int i = 0; i < data.Currencies.Length; i++)
         {
             var type = (ECurrencyType)i;
-            data.Currencies[(int)type] = double.Parse(PlayerPrefs.GetString(type.ToString()));
+            if (double.TryParse(PlayerPrefs.GetString(type.ToString(), "0"), out double value))
+            {
+                data.Currencies[(int)type] = value;
+            }
         }
 
         return data;

@@ -25,7 +25,10 @@ public class LocalCurrencyRepository : ICurrencyRepository
         for (int i = 0; i < data.Currencies.Length; i++)
         {
             var type = (ECurrencyType)i;
-            data.Currencies[(int)type] = double.Parse(PlayerPrefs.GetString($"{_userID}_{type.ToString()}"));
+            if (double.TryParse(PlayerPrefs.GetString($"{_userID}_{type.ToString()}", "0"), out double value))
+            {
+                data.Currencies[(int)type] = value;
+            }
         }
 
         return data;

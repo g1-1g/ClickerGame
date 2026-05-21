@@ -2,63 +2,60 @@ using System;
 
 public struct Currency
 {
-    public double Value;
+    public double Value { get; }
 
     public Currency(double value)
     {
-        //À¯È¿¼º °Ë»ç
         if (value < 0)
         {
-            throw new Exception("Currency °ªÀº 0º¸´Ù ÀÛÀ» ¼ö ¾ø½À´Ï´Ù.");
+            throw new ArgumentException($"CurrencyëŠ” 0ë³´ë‹¤ ìž‘ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. : {value}");
         }
 
         Value = value;
     }
 
-    // 1. ÀçÈ­³¢¸® ´õÇÏ±â
     public static Currency operator +(Currency currency1, Currency currency2)
     {
         return new Currency(currency1.Value + currency2.Value);
     }
 
-    // 2. ÀçÈ­³¢¸® »©±â
-    public static Currency operator -(Currency a, Currency b)
+    public static Currency operator -(Currency currency1, Currency currency2)
     {
-        return new Currency(a.Value - b.Value);
+        return new Currency(currency1.Value - currency2.Value);
     }
 
-    // 3. ºñ±³ ¿¬»êÀÚµé
-    public static bool operator >=(Currency a, Currency b)
+    public static bool operator >=(Currency currency1, Currency currency2)
     {
-        return a.Value >= b.Value;
+        return currency1.Value >= currency2.Value;
     }
 
-    public static bool operator <=(Currency a, Currency b)
+    public static bool operator <=(Currency currency1, Currency currency2)
     {
-        return a.Value <= b.Value;
+        return currency1.Value <= currency2.Value;
     }
 
-    public static bool operator >(Currency a, Currency b)
+    public static bool operator >(Currency currency1, Currency currency2)
     {
-        return a.Value > b.Value;
+        return currency1.Value > currency2.Value;
     }
 
-    public static bool operator <(Currency a, Currency b)
+    public static bool operator <(Currency currency1, Currency currency2)
     {
-        return a.Value < b.Value;
+        return currency1.Value < currency2.Value;
     }
 
-    // double ¡æ Currency ¾Ï½ÃÀû º¯È¯    
     public static implicit operator Currency(double value)
     {
         return new Currency(value);
     }
 
-    // Currency -> double ¾Ï½ÃÀû º¯È¯
     public static explicit operator double(Currency currency)
     {
         return currency.Value;
     }
 
-
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
 }

@@ -2,25 +2,20 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-
 public class CurrencyManager : MonoBehaviour
 {
-    //CRUD
-    //재화에 대한 생성 / 조회 / 사용 / 소모 / 이벤트
-
     private static CurrencyManager _instance;
     public static CurrencyManager Instance { get { return _instance; } }
 
-    private double[] _currencies = new double[(int)ECurrencyType.Count];
-    
-    public double Heart => _currencies[(int)ECurrencyType.Heart];
+    private Currency[] _currencies = new Currency[(int)ECurrencyType.Count];
+    private ICurrencyRepository _repository;
+    private bool _isReady = false;
+
+    public double Heart => _currencies[(int)ECurrencyType.Heart].Value;
 
     public static event Action OnDataChanged;
     public static event Action<double> OnCurrencyAdded;
 
-    private ICurrencyRepository _repository;
-
-    private bool _isReady = false;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -28,30 +23,36 @@ public class CurrencyManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         _instance = this;
     }
 
     private async void Start()
     {
         await WaitForFirebaseAsync();
-
-        // Repository 생성
-        _repository = new FirebaseCurrencyRepository(AccountManager.Instance.Email);
-
-        // 데이터 로드
-        await LoadData();
-
-        _isReady = true;
+        await Initialize(new FirebaseCurrencyRepository(AccountManager.Instance.Email));
     }
 
     private async UniTask WaitForFirebaseAsync()
     {
-        // FirebaseManager가 준비될 때까지 대기
         while (FirebaseInitializer.Instance == null ||
-               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
+               !FirebaseInitializer.Instance.IsInitialized ||
+               AccountManager.Instance == null ||
+               AccountManager.Instance.Email == string.Empty)
         {
             await UniTask.Yield();
         }
+    }
+
+    public async UniTask Initialize(ICurrencyRepository repository)
+    {
+        if (_isReady)
+        {
+            return;
+        }
+
+        _repository = repository;
+        await LoadData();
 
         _isReady = true;
     }
@@ -59,43 +60,56 @@ public class CurrencyManager : MonoBehaviour
     private async UniTask LoadData()
     {
         CurrencySaveData data = await _repository.Load();
-        _currencies = data.Currencies;
+        double[] savedCurrencies = data?.Currencies ?? CurrencySaveData.Default.Currencies;
+
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            double value = i < savedCurrencies.Length ? savedCurrencies[i] : 0;
+            _currencies[i] = new Currency(value);
+        }
+
         OnDataChanged?.Invoke();
     }
 
     private void SaveData()
     {
         if (!_isReady) return;
+
         CurrencySaveData data = new CurrencySaveData();
-        data.Currencies = _currencies;
+        data.Currencies = new double[_currencies.Length];
+
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            data.Currencies[i] = _currencies[i].Value;
+        }
 
         _repository.Save(data);
     }
 
-
     public void Add(ECurrencyType type, double amount)
     {
-        _currencies[(int)type] += amount;
+        Currency amountCurrency = new Currency(amount);
+        _currencies[(int)type] = _currencies[(int)type] + amountCurrency;
 
         OnDataChanged?.Invoke();
         OnCurrencyAdded?.Invoke(amount);
         SaveData();
     }
 
-    public bool TrySpend(ECurrencyType type, double amount)
+    public bool TrySpend(ECurrencyType type, Currency amount)
     {
         if (amount > _currencies[(int)type])
         {
             return false;
         }
 
-        _currencies[(int)type] -= amount;
+        _currencies[(int)type] = _currencies[(int)type] - amount;
         OnDataChanged?.Invoke();
         SaveData();
         return true;
     }
 
-    public bool CanAfford(ECurrencyType type, double amount)
+    public bool CanAfford(ECurrencyType type, Currency amount)
     {
         if (amount > _currencies[(int)type])
         {

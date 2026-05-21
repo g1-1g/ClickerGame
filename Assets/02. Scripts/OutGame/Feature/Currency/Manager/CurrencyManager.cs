@@ -27,23 +27,6 @@ public class CurrencyManager : MonoBehaviour
         _instance = this;
     }
 
-    private async void Start()
-    {
-        await WaitForFirebaseAsync();
-        await Initialize(new FirebaseCurrencyRepository(AccountManager.Instance.Email));
-    }
-
-    private async UniTask WaitForFirebaseAsync()
-    {
-        while (FirebaseInitializer.Instance == null ||
-               !FirebaseInitializer.Instance.IsInitialized ||
-               AccountManager.Instance == null ||
-               AccountManager.Instance.Email == string.Empty)
-        {
-            await UniTask.Yield();
-        }
-    }
-
     public async UniTask Initialize(ICurrencyRepository repository)
     {
         if (_isReady)

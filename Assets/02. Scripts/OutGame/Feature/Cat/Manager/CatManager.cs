@@ -1,36 +1,27 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-
 using UnityEngine;
-
 
 public class CatManager : MonoBehaviour
 {
-    // ===== Singleton =====
     private static CatManager _instance;
     public static CatManager Instance { get { return _instance; } }
 
-    // ===== Serialized Fields =====
     [Header("Cat Database")]
     [SerializeField] private CatSpecTableSO _catSpecTable;
 
     [SerializeField] private bool _defaultName = true;
 
-    // ===== Private Fields =====
     private ECatType _defaultCatType = ECatType.YellowCat;
     private Dictionary<ECatType, Cat> _ownedCats = new Dictionary<ECatType, Cat>();
-    private CatSaveData[] _ownedCatsData = new CatSaveData[(int)ECatType.Count]; 
+    private CatSaveData[] _ownedCatsData = new CatSaveData[(int)ECatType.Count];
     private Cat _currentCat;
-  
     private ICatsRepository _repository;
-
     private bool _isReady = false;
 
-    // ===== Properties =====
     public Cat CurrentCat => _currentCat;
 
-    // ===== Events =====
     public static event Action OnCatChanged;
     public static event Action<bool> OnAffectionUp;
     public static event Action<ECatType> OnCatAdded;
@@ -42,28 +33,19 @@ public class CatManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         _instance = this;
     }
-    private async void Start()
+
+    public async UniTask Initialize(ICatsRepository repository)
     {
-        // Firebase 초기화 대기
-        await WaitForFirebaseAsync();
-
-        // Repository 생성
-        _repository = new FirebaseCatsRepository(AccountManager.Instance.Email);
-
-        // 데이터 로드
-        await LoadData();
-    }
-
-    private async UniTask WaitForFirebaseAsync()
-    {
-        // FirebaseManager가 준비될 때까지 대기
-        while (FirebaseInitializer.Instance == null ||
-               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
+        if (_isReady)
         {
-            await UniTask.Yield();
+            return;
         }
+
+        _repository = repository;
+        await LoadData();
 
         _isReady = true;
     }
@@ -74,8 +56,7 @@ public class CatManager : MonoBehaviour
 
         if (loadedData == null)
         {
-            // 데이터 없으면 기본값으로 초기화
-            Debug.Log("[CatManager] 기본값 생성");
+            Debug.Log("[CatManager] Create default data");
             AddCat(_defaultCatType);
 
             SetCat(_defaultCatType);
@@ -93,7 +74,7 @@ public class CatManager : MonoBehaviour
             SetCat(loadedData.CurrentCatType);
         }
 
-        Debug.Log("[CatManager] 데이터 로드 완료");
+        Debug.Log("[CatManager] Load complete");
     }
 
     public void SaveData()
@@ -113,12 +94,12 @@ public class CatManager : MonoBehaviour
     {
         if (!_ownedCats.ContainsKey(catType))
         {
-            Debug.LogError($"해당 고양이를 소유하고 있지 않습니다.: {catType}");
+            Debug.LogError($"Cat is not owned: {catType}");
             return;
         }
 
         _currentCat = _ownedCats[catType];
-     
+
         SaveData();
 
         OnCatChanged?.Invoke();
@@ -128,7 +109,7 @@ public class CatManager : MonoBehaviour
     {
         if (_ownedCats.ContainsKey(catType))
         {
-            Debug.LogWarning($"이미 보유 중인 고양이: {catType}");
+            Debug.LogWarning($"Cat is already owned: {catType}");
             return;
         }
 
@@ -137,7 +118,7 @@ public class CatManager : MonoBehaviour
         CommitCatToSaveData(cat);
 
         OnCatAdded?.Invoke(catType);
-        Debug.Log($"새 고양이 획득: {catType}");
+        Debug.Log($"Cat acquired: {catType}");
     }
 
     public bool AffectionUp(double amount)
@@ -153,8 +134,8 @@ public class CatManager : MonoBehaviour
         {
             return true;
         }
-        
-        return false;   
+
+        return false;
     }
 
     public void SetName(ECatType catType, string name)
@@ -163,7 +144,7 @@ public class CatManager : MonoBehaviour
         if (_currentCat.CatType == catType)
         {
             OnCatChanged?.Invoke();
-        }    
+        }
     }
 
     private void CommitCatToSaveData(Cat cat)

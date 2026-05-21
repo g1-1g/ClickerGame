@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 public class ItemManager : MonoBehaviour
 {
     private static ItemManager _instance;
@@ -14,21 +14,19 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private ItemSpecTableSO _specTable;
 
     private Dictionary<EItemType, Item> _items = new();
-
     private int[] _levels = new int[(int)EItemType.Count];
-
     private IItemLevelRepository _repository;
 
-    private async void Awake()
+    private void Awake()
     {
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
         _instance = this;
 
-        // 스펙 데이터에 따라 도메인 생성
         foreach (var specData in _specTable.Datas)
         {
             if (_items.ContainsKey(specData.StatType))
@@ -40,30 +38,21 @@ public class ItemManager : MonoBehaviour
 
             OnDataChanged?.Invoke(specData.StatType);
         }
+    }
 
-        // Firebase 초기화 대기
-        await WaitForFirebaseAsync();
+    public async UniTask Initialize(IItemLevelRepository repository)
+    {
+        if (_repository != null)
+        {
+            return;
+        }
 
-        // Repository 생성
-        _repository = new FirebaseItemLevelRepository(AccountManager.Instance.Email);
-
-        // 데이터 로드
+        _repository = repository;
         await LoadData();
     }
 
     public Item Get(EItemType type) => _items[type] ?? null;
     public List<Item> GetAll() => _items.Values.ToList();
-
-    
-    private async UniTask WaitForFirebaseAsync()
-    {
-        // FirebaseManager가 준비될 때까지 대기
-        while (FirebaseInitializer.Instance == null ||
-               !FirebaseInitializer.Instance.IsInitialized || AccountManager.Instance.Email == string.Empty)
-        {
-            await UniTask.Yield();
-        }
-    }
 
     public bool CanLevelUp(EItemType type)
     {
@@ -112,11 +101,9 @@ public class ItemManager : MonoBehaviour
 
         if (loadedData == null)
         {
-            // 데이터 없으면 기본값으로 초기화
-            Debug.Log("[Item] 기본값 생성");
+            Debug.Log("[Item] Create default data");
             _levels = ItemLevelSaveData.Default.Levels;
 
-            // 즉시 저장 (다음부터는 로드됨)
             SaveData();
         }
         else
@@ -129,7 +116,8 @@ public class ItemManager : MonoBehaviour
             _items[(EItemType)i].SetLevel(_levels[i]);
             OnDataChanged?.Invoke((EItemType)i);
         }
-        Debug.Log("[Item] 데이터 로드 완료"); 
+
+        Debug.Log("[Item] Load complete");
     }
 
     private void SaveData()

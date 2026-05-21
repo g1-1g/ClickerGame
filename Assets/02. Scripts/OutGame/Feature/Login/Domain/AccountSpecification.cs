@@ -21,7 +21,7 @@ public class AccountSpecification
 
     public static readonly Regex PasswordRegex = new Regex(
         _passwordPattern,
-        RegexOptions.Compiled
+        RegexOptions.Compiled 
     );
 
     public bool IsSatisfiedEmailBy(string email)

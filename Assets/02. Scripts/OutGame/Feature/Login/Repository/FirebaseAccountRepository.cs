@@ -67,7 +67,7 @@ public class FirebaseAccountRepository : IAccountRepository
     public void Logout()
     {
         _auth.SignOut();
-        Debug.Log("로그아웃 되었습니다");
+        Debug.Log("로그아웃 되었습니다");dmse
     }
 
     public async UniTask<AccountResult> Register(string email, string password)

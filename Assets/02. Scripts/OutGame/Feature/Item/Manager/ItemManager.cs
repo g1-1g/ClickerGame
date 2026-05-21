@@ -16,6 +16,7 @@ public class ItemManager : MonoBehaviour
     private Dictionary<EItemType, Item> _items = new();
     private int[] _levels = new int[(int)EItemType.Count];
     private IItemLevelRepository _repository;
+    private ICurrencyWallet _currencyWallet;
 
     private void Awake()
     {
@@ -40,7 +41,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public async UniTask Initialize(IItemLevelRepository repository)
+    public async UniTask Initialize(IItemLevelRepository repository, ICurrencyWallet currencyWallet)
     {
         if (_repository != null)
         {
@@ -48,6 +49,7 @@ public class ItemManager : MonoBehaviour
         }
 
         _repository = repository;
+        _currencyWallet = currencyWallet;
         await LoadData();
     }
 
@@ -66,7 +68,7 @@ public class ItemManager : MonoBehaviour
             return false;
         }
 
-        return CurrencyManager.Instance.CanAfford(ECurrencyType.Heart, upgrade.Cost);
+        return _currencyWallet.CanAfford(ECurrencyType.Heart, upgrade.Cost);
     }
 
     public bool TryLevelUp(EItemType type)
@@ -81,7 +83,7 @@ public class ItemManager : MonoBehaviour
             return false;
         }
 
-        if (!CurrencyManager.Instance.TrySpend(ECurrencyType.Heart, item.Cost))
+        if (!_currencyWallet.TrySpend(ECurrencyType.Heart, item.Cost))
         {
             return false;
         }

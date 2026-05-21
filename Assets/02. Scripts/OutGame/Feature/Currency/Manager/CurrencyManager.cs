@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class CurrencyManager : MonoBehaviour
+public class CurrencyManager : MonoBehaviour, ICurrencyWallet
 {
     private static CurrencyManager _instance;
     public static CurrencyManager Instance { get { return _instance; } }

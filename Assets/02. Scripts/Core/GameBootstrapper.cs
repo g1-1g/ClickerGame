@@ -24,7 +24,7 @@ public class GameBootstrapper : MonoBehaviour
 
         string userId = AccountManager.Instance.Email;
         await _currencyManager.Initialize(new FirebaseCurrencyRepository(userId));
-        await _itemManager.Initialize(new FirebaseItemLevelRepository(userId));
+        await _itemManager.Initialize(new FirebaseItemLevelRepository(userId), _currencyManager);
         await _catManager.Initialize(new FirebaseCatsRepository(userId));
     }
 
